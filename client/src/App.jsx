@@ -1,11 +1,12 @@
+import Login from "./pages/auth/login";
+
+
 function App() {
 
   return (
-    <>
       <div>
-        Hello World
+        <Login />
       </div>
-    </>
   )
 }
 
