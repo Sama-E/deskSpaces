@@ -12,24 +12,28 @@ import Messages from "../../assets/images/10.png";
 import Tutorials from "../../assets/images/11.png";
 import Courses from "../../assets/images/12.png";
 import Fund from "../../assets/images/13.png";
-// import { AuthContext } from "../../context/authContext";
+import { AuthContext } from "../../context/authContext";
 import { useContext } from "react";
 
 const LeftBar = () => {
 
-  // const { currentUser } = useContext(AuthContext);
+  const { currentUser } = useContext(AuthContext);
 
   return (
     <div className="leftBar">
       <div className="container">
         <div className="menu">
           <div className="user">
-            {/* <img
+            <img
               src={currentUser.profilePic}
               alt=""
             />
-            <span>{currentUser.name}</span> */}
+            <span>{currentUser.name}</span>
           </div>
+        </div>
+        <hr />
+        <div className="menu">
+          <span>Your shortcuts</span>
           <div className="item">
             <img src={Friends} alt="" />
             <span>Friends</span>
@@ -50,10 +54,6 @@ const LeftBar = () => {
             <img src={Memories} alt="" />
             <span>Memories</span>
           </div>
-        </div>
-        <hr />
-        <div className="menu">
-          <span>Your shortcuts</span>
           <div className="item">
             <img src={Events} alt="" />
             <span>Events</span>
