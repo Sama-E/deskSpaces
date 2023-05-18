@@ -1,13 +1,13 @@
 import { db } from "../connect.js";
 import bcrypt from "bcryptjs";
-import { Jwt } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 
 // REGISTER
-export const register = (req, res ) => {
+export const register = (req, res) => {
 //Check user if exists
-const q = "SELECT * FROM users WHERE username = ?;"
+const q = "SELECT * FROM users WHERE email = ?;"
 
-db.query(q,[req.body.username], (err, data) => {
+db.query(q,[req.body.email], (err, data) => {
   if(err) 
     return res.status(500).json(err);
   if(data.length) 
@@ -17,10 +17,9 @@ db.query(q,[req.body.username], (err, data) => {
     const salt = bcrypt.genSaltSync(10);
     const hashedPassword = bcrypt.hashSync(req.body.password, salt);
 
-    const  q = "INSERT INTO users (`username`, `email`,`password`) VALUE (?);"
+    const  q = "INSERT INTO users ( `email`,`password`) VALUE (?);"
 
     const values = [
-      req.body.username, 
       req.body.email, 
       hashedPassword,
     ];
@@ -51,10 +50,21 @@ const q = "SELECT * FROM users WHERE email = ?"
       return res.status(400).json("Wrong password or email!")
 
     const token = jwt.sign({ id: data[0].id }, "secretKey");
+
+    const { password, ...others } = data[0]
+
+    //Return user's data without password
+    res.cookie("accessToken", token, {
+      httpOnly: true,
+    }).status(200).json(others);
   });
 };
 
 //LOGOUT
 export const logout = (req, res ) => {
+  res.clearCookie("accessToken",{
+    secure: true,
+    sameSite:"none"
+  }).status(200).json("User is logged out!")
   
 }
