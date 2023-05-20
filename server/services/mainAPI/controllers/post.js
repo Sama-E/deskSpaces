@@ -1,13 +1,47 @@
 import { db } from "../connect.js";
+import jwt from "jsonwebtoken";
 
-//Get Posts (users and friends posts)
-// p = posts table, u = users table
 export const getPosts = (req, res) => {
-  const q = `SELECT p.*, u.id AS userId, email FROM posts AS p JOIN users AS u ON (u.id = p.userId)`;
+  //Get current userId from accessToken
 
-  db.query(q, (err,data) => {
-    if (err) 
-      return res.status(500).json(err);
-    return res.status(200).json(data);
+  // const userId = req.query.userId;
+  const token = req.cookies.accessToken;
+  if (!token) return res.status(401).json("Not logged in!");
+
+  //Verify token and pull userInfo if error token is not valid
+
+  jwt.verify(token, "secretkey", (err, userInfo) => {
+    if (err) return res.status(403).json("Token is not valid!")
+  
+
+    //Get Posts (users and friends posts)
+    // p = posts table, u = users table, r = realtionships
+    // selects post
+    // select from users table -> userId, email
+    // Join posts and users table on currentUser id as postsUserId
+    // Join relationships table on postsUserId as followedUsersId
+    // Where currentUser id is followerUserId or postsUsersId
+    const q = 
+    //     userId !== "undefined"
+    //     ? `SELECT p.*, u.id AS userId, email FROM posts AS p JOIN users AS u ON (u.id = p.userId) WHERE p.userId = ? ORDER BY p.createdAt DESC`
+    //     : `SELECT p.*, u.id AS userId, email FROM posts AS p JOIN users AS u ON (u.id = p.userId)
+    // LEFT JOIN relationships AS r ON (p.userId = r.followedUserId) WHERE r.followerUserId= ? OR p.userId =?
+    // ORDER BY p.createdAt DESC`;
+
+    `SELECT p.*, u.id AS userId, email, name FROM posts AS p JOIN users AS u ON (u.id = p.userId) 
+    JOIN relationships AS r ON (p.userId = r.followedUserId AND r.followerUserId= ?)`;
+
+
+
+    // const values =
+    // userId !== "undefined" ? [userId] : [userInfo.id, userInfo.id];
+
+    //Query: token verified, get userInfo.id(data), and posts data/errors
+    db.query(q, [userInfo.id], (err, data) => {
+    // db.query(q, values, (err, data) => {
+      if (err) 
+        return res.status(500).json(err);
+      return res.status(200).json(data);
+    });
   });
 };

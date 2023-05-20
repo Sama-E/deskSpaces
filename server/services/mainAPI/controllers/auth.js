@@ -49,14 +49,14 @@ const q = "SELECT * FROM users WHERE email = ?"
     if(!checkPassword) 
       return res.status(400).json("Wrong password or email!")
 
-    const token = jwt.sign({ id: data[0].id }, "secretKey");
+    const token = jwt.sign({ id: data[0].id }, "secretkey");
 
     const { password, ...others } = data[0]
 
     //Return user's data without password
-    res.cookie("accessToken", token, {
-      httpOnly: true,
-    }).status(200).json(others);
+    res.cookie("accessToken", token, {httpOnly: true,})
+    .status(200)
+    .json(others);
   });
 };
 

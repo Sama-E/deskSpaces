@@ -1,4 +1,3 @@
-import { useContext } from "react";
 import OnePost from "./OnePost";
 import "/src/assets/css/components/posts/posts.scss";
 import { useQuery } from '@tanstack/react-query';
@@ -15,7 +14,7 @@ const Posts = () => {
 
   console.log(data)
 
-    //TEMPORARY
+    // TEMPORARY
     // const posts = [
     //   {
     //     id: 1,
@@ -41,7 +40,7 @@ const Posts = () => {
       {error 
         ? "Something is wrong..." 
         : isLoading
-        ? "...loading" 
+        ? " ... loading " 
         : data.map(onePost => (
         <OnePost onePost={onePost} key={onePost.id} />
       ))}
