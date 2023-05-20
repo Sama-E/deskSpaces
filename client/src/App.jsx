@@ -47,7 +47,7 @@ function App() {
           </div>
         </div>
       </QueryClientProvider>
-    )
+    );
   }
 
   const ProtectedRoute = ({children}) => {

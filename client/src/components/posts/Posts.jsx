@@ -1,7 +1,6 @@
 import { useContext } from "react";
 import OnePost from "./OnePost";
 import "/src/assets/css/components/posts/posts.scss";
-import { AuthContext } from "src/context/authContext";
 import { useQuery } from '@tanstack/react-query';
 import { makeRequest } from "/services/axios";
 
