@@ -29,7 +29,8 @@ export const getPosts = (req, res) => {
     // ORDER BY p.createdAt DESC`;
 
     `SELECT p.*, u.id AS userId, email, name FROM posts AS p JOIN users AS u ON (u.id = p.userId) 
-    JOIN relationships AS r ON (p.userId = r.followedUserId AND r.followerUserId= ?)`;
+    LEFT JOIN relationships AS r ON (p.userId = r.followedUserId) WHERE r.followerUserId= ? OR p.userId =?
+    ORDER BY p.createdAt DESC`;
 
 
 
@@ -37,7 +38,7 @@ export const getPosts = (req, res) => {
     // userId !== "undefined" ? [userId] : [userInfo.id, userInfo.id];
 
     //Query: token verified, get userInfo.id(data), and posts data/errors
-    db.query(q, [userInfo.id], (err, data) => {
+    db.query(q, [userInfo.id, userInfo.id], (err, data) => {
     // db.query(q, values, (err, data) => {
       if (err) 
         return res.status(500).json(err);
