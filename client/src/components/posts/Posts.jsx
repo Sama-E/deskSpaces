@@ -38,11 +38,15 @@ const Posts = () => {
 
   return (
     <div className="posts">
-      {/* {data.map(onePost => (
+      {error 
+        ? "Something is wrong..." 
+        : isLoading
+        ? "...loading" 
+        : data.map(onePost => (
         <OnePost onePost={onePost} key={onePost.id} />
-      ))} */}
+      ))}
     </div>
-  )
-}
+  );
+};
 
 export default Posts;
