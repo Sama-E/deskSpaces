@@ -1,30 +1,22 @@
 import "/src/assets/css/components/comments/comments.scss";
 import { AuthContext } from "src/context/authContext";
 import { useContext } from "react";
+import { makeRequest } from "/services/axios";
+import { useQuery } from "@tanstack/react-query";
+import moment from "moment";
 
-const Comments = () => {
+const Comments = ({postId}) => {
 
   const {currentUser} = useContext(AuthContext);
-  
-  //TEMPORARY
-  const comments = [
-    {
-      id: 1,
-      name: "John Doe",
-      userId: 1,
-      profilePic:
-        "https://images.pexels.com/photos/13916254/pexels-photo-13916254.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load",
-      desc: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quas assumenda repudiandae molestias repellendus nam dolor magnam ratione recusandae consequuntur? Aliquam temporibus ad ut dolorum magni maxime nostrum a dignissimos earum.",
-    },
-    {
-      id: 2,
-      name: "John Doe",
-      userId: 2,
-      profilePic:
-        "https://images.pexels.com/photos/13916254/pexels-photo-13916254.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load",
-      desc: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quas assumenda repudiandae molestias repellendus nam dolor magnam ratione recusandae consequuntur? Aliquam temporibus ad ut dolorum magni maxime nostrum a dignissimos earum.",
-    },
-  ];
+    //Via makeRequest to access posts from server
+  const { isLoading, error, data } = useQuery(["comments"], () => 
+  makeRequest.get("/comments?postId" + postId).then((res) => {
+    return res.data;
+  })
+);
+
+console.log(data);
+
   return (
     <div className="comments">
         <div className="write">
@@ -32,8 +24,9 @@ const Comments = () => {
           <input type="text" placeholder="write a comment" />
           <button>Comment</button>
         </div>
-      {
-        comments.map((comment) =>(
+      {isLoading
+        ? " ... loading " 
+        : data.map((comment) =>(
 
         <div className="comment">
           <img src={comment.profilePic} alt="" />
@@ -41,7 +34,9 @@ const Comments = () => {
             <span>{comment.name}</span>
             <p>{comment.desc}</p>
           </div>
-          <span className="date">1 hour ago</span>
+          <span className="date">
+            {moment(comment.created_at).fromNow()}
+          </span>
         </div>
 
         ))
