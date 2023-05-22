@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import moment from "moment";
 
-const OnePost = ({onePost}) => {
+const Post = ({post}) => {
   const [commentOpen, setCommentOpen] = useState(false)
 
   //Temporary
@@ -23,19 +23,19 @@ const OnePost = ({onePost}) => {
       <div className="container">
         <div className="user">
           <div className="userInfo">
-            <img src={onePost.profilePic} alt="" />
+            <img src={post.profilePic} alt="" />
             <div className="details">
-              <Link to={`/profile/${onePost.userId}`} style={{textDecoration:"none", color:"inherit"}}>
-                <span className="name">{onePost.name}</span>
+              <Link to={`/profile/${post.userId}`} style={{textDecoration:"none", color:"inherit"}}>
+                <span className="name">{post.name}</span>
               </Link>
-                <span className="date"> {moment(onePost.created_at).fromNow()}</span>
+                <span className="date"> {moment(post.created_at).fromNow()}</span>
             </div>
           </div>
           <MoreHorizIcon />
         </div>
         <div className="content">
-          <p>{onePost.desc}</p>
-          <img src={"./upload/" + onePost.img} alt="" />
+          <p>{post.desc}</p>
+          <img src={"./upload/" + post.img} alt="" />
         </div>
         <div className="info">
           <div className="item">
@@ -51,10 +51,10 @@ const OnePost = ({onePost}) => {
             Share
           </div>
         </div>
-        { commentOpen && <Comments postId={onePost.id} /> }
+        { commentOpen && <Comments postId={post.id} /> }
       </div>
     </div>
   )
 }
 
-export default OnePost;
+export default Post;

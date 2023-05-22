@@ -1,4 +1,4 @@
-import OnePost from "./OnePost";
+import Post from "./Post";
 import "/src/assets/css/components/posts/posts.scss";
 import { useQuery } from '@tanstack/react-query';
 import { makeRequest } from "/services/axios";
@@ -41,8 +41,8 @@ const Posts = () => {
         ? "Something is wrong..." 
         : isLoading
         ? " ... loading " 
-        : data.map(onePost => (
-        <OnePost onePost={onePost} key={onePost.id} />
+        : data.map(post => (
+        <Post post={post} key={post.id} />
       ))}
     </div>
   );

@@ -1,12 +1,13 @@
 import "/src/assets/css/components/comments/comments.scss";
 import { AuthContext } from "src/context/authContext";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { makeRequest } from "/services/axios";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import moment from "moment";
 
 const Comments = ({postId}) => {
 
+  const [ desc, setDesc] = useState("");
   const {currentUser} = useContext(AuthContext);
     //Via makeRequest to access posts from server
   const { isLoading, error, data } = useQuery(["comments"], () => 
@@ -15,14 +16,37 @@ const Comments = ({postId}) => {
   })
 );
 
-console.log(data);
+//Fetching client for posts
+const queryClient = useQueryClient()
+//Mutation updates new posts
+const mutation = useMutation(
+  (newComment) =>{
+    return makeRequest.post("/comments", newComment);
+  }, {
+    onSuccess: () => {
+      // Invalidate and refetch
+      queryClient.invalidateQueries(["comments"])
+    },
+  }
+);
+
+const handleClick = async (e) => {
+  e.preventDefault();
+  mutation.mutate({desc, postId});
+  setDesc("");
+};
 
   return (
     <div className="comments">
         <div className="write">
           <img src={currentUser.profilePic} alt="" />
-          <input type="text" placeholder="write a comment" />
-          <button>Comment</button>
+          <input 
+            type="text" 
+            placeholder="write a comment"
+            value={desc}
+            onChange={(e) => setDesc(e.target.value)}
+          />
+          <button onClick={handleClick}>Comment</button>
         </div>
       {isLoading
         ? " ... loading " 
