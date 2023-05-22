@@ -9,12 +9,15 @@ const Comments = ({postId}) => {
 
   const [ desc, setDesc] = useState("");
   const {currentUser} = useContext(AuthContext);
-    //Via makeRequest to access posts from server
+
+  //Via makeRequest to access comments with postId from server
   const { isLoading, error, data } = useQuery(["comments"], () => 
-  makeRequest.get("/comments?postId" + postId).then((res) => {
+  makeRequest.get("/comments?postId=" + postId).then((res) => {
     return res.data;
   })
 );
+
+console.log(data)
 
 //Fetching client for posts
 const queryClient = useQueryClient()
