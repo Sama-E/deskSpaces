@@ -9,7 +9,7 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 
 import { Link } from "react-router-dom";
 import { useContext, useState } from "react";
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { makeRequest } from "/services/axios";
 import moment from "moment";
 import { AuthContext } from "src/context/authContext";
@@ -18,6 +18,8 @@ const Post = ({post}) => {
   const [commentOpen, setCommentOpen] = useState(false)
 
   const { currentUser } = useContext(AuthContext);
+
+  const queryClient = useQueryClient();
 
   //Likes
   //Issue: TypeError for data when using data.length
@@ -29,9 +31,26 @@ const Post = ({post}) => {
     })
   );
 
-  console.log(data);
+  //Immediately visible
+  //If already liked, delete from db, if not liked yet insert in db
+  const mutation = useMutation(
+    (liked) => {
+      if (liked) 
+        return makeRequest.delete("/likes?postId=" + post.id);
+      return makeRequest.post("/likes", { postId: post.id });
+    },
+    {
+      onSuccess: () => {
+        // Invalidate and refetch
+        queryClient.invalidateQueries(["likes"]);
+      },
+    }
+  );
 
-
+  //Mutation and condition if currentUser liked already
+  const handleLike = () => {
+    mutation.mutate(data && data.includes(currentUser.id))
+  }
 
   return (
     <div className="one_post">
@@ -54,16 +73,22 @@ const Post = ({post}) => {
         </div>
         <div className="info">
           <div className="item">
-            {data && data.includes(currentUser.id) ? (
-              <FavoriteOutlinedIcon style={{color:'red'}} />
+            {isLoading ? ("loading") :
+            data && data.includes(currentUser.id) ? (
+              <FavoriteOutlinedIcon 
+                style={{color:'red'}} 
+                onClick={handleLike}  
+              />
               ) : (
-              <FavoriteBorderOutlinedIcon /> 
+              <FavoriteBorderOutlinedIcon
+                onClick={handleLike}
+              /> 
             )}
             { data && data.length } likes
           </div>
           <div className="item" onClick={() => setCommentOpen(!commentOpen)}>
             <TextsmsOutlinedIcon />
-            12 Comments
+            See Comments
           </div>
           <div className="item">
             <ShareOutlinedIcon />

@@ -9,8 +9,24 @@ import LanguageIcon from "@mui/icons-material/Language";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Posts from "src/components/posts/Posts";
+import { useContext } from "react";
+import { AuthContext } from "src/context/authContext";
+import { useLocation } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { makeRequest } from "/services/axios";
 
 const Profile = () => {
+  const { currentUser } = useContext(AuthContext);
+
+  const userId = parseInt(useLocation().pathname.split("/")[2]);
+
+  const { isLoading, error, data } = useQuery(["user"], () => 
+    makeRequest.get("/users/find/" + userId).then((res) => {
+      return res.data;
+    })
+  );
+  console.log(data)
+
   return (
     <div className="profile">
       <div className="images">
@@ -42,7 +58,7 @@ const Profile = () => {
             </a>
           </div>
           <div className="center">
-            <span>Jane Doe</span>
+            <span>{data && data.name}</span>
             <div className="info">
               <div className="item">
                 <PlaceIcon />

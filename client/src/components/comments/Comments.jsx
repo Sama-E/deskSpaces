@@ -17,8 +17,6 @@ const Comments = ({postId}) => {
   })
 );
 
-console.log(data)
-
 //Fetching client for posts
 const queryClient = useQueryClient()
 //Mutation updates new posts
