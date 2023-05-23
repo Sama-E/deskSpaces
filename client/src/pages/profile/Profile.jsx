@@ -12,12 +12,14 @@ import Posts from "src/components/posts/Posts";
 import { useContext } from "react";
 import { AuthContext } from "src/context/authContext";
 import { useLocation } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { makeRequest } from "/services/axios";
 
 const Profile = () => {
   const { currentUser } = useContext(AuthContext);
+  const queryClient = useQueryClient();
 
+  //parseInt to make both userId from pathname a number to interact with currentUser.id
   const userId = parseInt(useLocation().pathname.split("/")[2]);
 
   const { isLoading, error, data } = useQuery(["user"], () => 
@@ -25,11 +27,38 @@ const Profile = () => {
       return res.data;
     })
   );
-  console.log(data)
+
+  const { isLoading: rIsLoading, data: relationshipData } = useQuery(["relationship"], () => 
+  makeRequest.get("/relationships?followedUserId=" + userId).then((res) => {
+    return res.data;
+  })
+);
+
+const mutation = useMutation(
+  (following) => {
+    if (following) 
+      return makeRequest.delete("/relationships?userId=" + userId);
+    return makeRequest.post("/relationships", { userId });
+  },
+  {
+    onSuccess: () => {
+      // Invalidate and refetch
+      queryClient.invalidateQueries(["relationship"]);
+    },
+  }
+);
+
+const handleFollow = () => {
+  mutation.mutate(relationshipData && relationshipData.includes(currentUser.id))
+}
+
+  const handleUpdate = () => {}
 
   return (
     <div className="profile">
-      <div className="images">
+      { isLoading ? "... loading" :
+      <>
+        <div className="images">
         <img
           src="https://images.pexels.com/photos/13440765/pexels-photo-13440765.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
           alt=""
@@ -69,15 +98,28 @@ const Profile = () => {
                 <span>lama.dev</span>
               </div>
             </div>
-            <button>follow</button>
+            {
+              rIsLoading ? "... loading" :
+              userId === currentUser.id ? (
+                <button onClick={handleUpdate}>update</button>
+                ):(
+                <button onClick={handleFollow}>
+                  {
+                    relationshipData.includes(currentUser.id)
+                    ? "Following" : "Follow"
+                  }
+                </button>
+            )}
           </div>
           <div className="right">
             <EmailOutlinedIcon />
             <MoreVertIcon />
           </div>
         </div>
-      <Posts/>
+      <Posts userId = { userId }/>
       </div>
+      </>
+      }
     </div>
   );
 };

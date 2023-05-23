@@ -8,6 +8,7 @@ import authsRoutes from "./routes/auths.js"
 import postsRoutes from "./routes/posts.js"
 import commentsRoutes from "./routes/comments.js"
 import likesRoutes from "./routes/likes.js"
+import relationshipsRoutes from "./routes/relationships.js"
 
 
 const app = express();
@@ -41,11 +42,12 @@ app.post("/api/upload", upload.single("file"), (req, res) => {
 });
 
 //Routes
-app.use("/api/users", userRoutes)
-app.use("/api/auths", authsRoutes)
-app.use("/api/posts", postsRoutes)
-app.use("/api/comments", commentsRoutes)
-app.use("/api/likes", likesRoutes)
+app.use("/api/users", userRoutes);
+app.use("/api/auths", authsRoutes);
+app.use("/api/posts", postsRoutes);
+app.use("/api/comments", commentsRoutes);
+app.use("/api/likes", likesRoutes);
+app.use("/api/relationships", relationshipsRoutes);
 
 
 app.listen(8800, () => {
