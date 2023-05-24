@@ -1,4 +1,7 @@
-import "/src/assets/css/pages/profile.scss";
+import "/src/assets/css/pages/profile/profile.scss";
+import Posts from "src/components/posts/Posts";
+import UpdateProfile from "./UpdateProfile";
+
 import FacebookTwoToneIcon from "@mui/icons-material/FacebookTwoTone";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import InstagramIcon from "@mui/icons-material/Instagram";
@@ -8,14 +11,15 @@ import PlaceIcon from "@mui/icons-material/Place";
 import LanguageIcon from "@mui/icons-material/Language";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import Posts from "src/components/posts/Posts";
-import { useContext } from "react";
+
+import { useContext, useState } from "react";
 import { AuthContext } from "src/context/authContext";
 import { useLocation } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { makeRequest } from "/services/axios";
 
 const Profile = () => {
+  const [openUpdate, setOpenUpdate] = useState(false);
   const { currentUser } = useContext(AuthContext);
   const queryClient = useQueryClient();
 
@@ -56,7 +60,7 @@ const handleFollow = () => {
 
   return (
     <div className="profile">
-      { isLoading ? "... loading" :
+      { isLoading ? ("... loading") : (
       <>
         <div className="images">
         <img
@@ -69,6 +73,8 @@ const handleFollow = () => {
           alt=""
           className="profilePic"
         />
+        {/* <img src={"/upload/"+data.coverPic} alt="" className="cover" />
+        <img src={"/upload/"+data.profilePic} alt="" className="profilePic" /> */}
       </div>
       <div className="profileContainer">
         <div className="uInfo">
@@ -98,17 +104,16 @@ const handleFollow = () => {
                 <span>lama.dev</span>
               </div>
             </div>
-            {
-              rIsLoading ? "... loading" :
-              userId === currentUser.id ? (
-                <button onClick={handleUpdate}>update</button>
-                ):(
-                <button onClick={handleFollow}>
-                  {
-                    relationshipData.includes(currentUser.id)
-                    ? "Following" : "Follow"
-                  }
-                </button>
+            {rIsLoading ? (
+              "loading"
+            ) : userId === currentUser.id ? (
+              <button onClick={() => setOpenUpdate(true)}>Update</button>
+            ) : (
+              <button onClick={handleFollow}>
+                {relationshipData.includes(currentUser.id)
+                  ? "Following"
+                  : "Follow"}
+              </button>
             )}
           </div>
           <div className="right">
@@ -119,7 +124,8 @@ const handleFollow = () => {
       <Posts userId = { userId }/>
       </div>
       </>
-      }
+      )}
+      {openUpdate && <UpdateProfile setOpenUpdate={setOpenUpdate} user={data} />}
     </div>
   );
 };
