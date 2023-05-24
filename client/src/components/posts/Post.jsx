@@ -16,6 +16,7 @@ import { AuthContext } from "src/context/authContext";
 
 const Post = ({post}) => {
   const [commentOpen, setCommentOpen] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const { currentUser } = useContext(AuthContext);
 
@@ -30,7 +31,7 @@ const Post = ({post}) => {
       return res.data;
     })
   );
-
+  //Delete Like Mutation
   //Immediately visible
   //If already liked, delete from db, if not liked yet insert in db
   const mutation = useMutation(
@@ -47,9 +48,28 @@ const Post = ({post}) => {
     }
   );
 
+  //Add & Delete Like
   //Mutation and condition if currentUser liked already
   const handleLike = () => {
     mutation.mutate(data && data.includes(currentUser.id))
+  };
+
+  //Delete Post Mutation
+  const deleteMutation = useMutation(
+    (postId) => {
+      return makeRequest.delete("/posts/" + postId);
+    },
+    {
+      onSuccess: () => {
+        // Invalidate and refetch
+        queryClient.invalidateQueries(["posts"]);
+      },
+    }
+  );
+
+  //Delete Post
+  const handleDelete = () => {
+    deleteMutation.mutate(post.id)
   }
 
   return (
@@ -65,7 +85,11 @@ const Post = ({post}) => {
                 <span className="date"> {moment(post.created_at).fromNow()}</span>
             </div>
           </div>
-          <MoreHorizIcon />
+          <MoreHorizIcon onClick={() => setMenuOpen(!menuOpen)} />
+          {
+          menuOpen && post.userId === currentUser.id &&
+          (<button onClick={handleDelete}>Delete</button>)
+          }
         </div>
         <div className="content">
           <p>{post.desc}</p>
