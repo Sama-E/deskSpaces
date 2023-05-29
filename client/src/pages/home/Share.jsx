@@ -1,4 +1,4 @@
-import "/src/assets/css/components/share.scss";
+import "/src/assets/css/components/posts/share.scss";
 import Image from "/src/assets/images/img.png";
 import Map from "../../assets/images/map.png";
 import Friend from "../../assets/images/friend.png";
