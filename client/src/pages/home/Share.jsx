@@ -62,7 +62,7 @@ const Share = () => {
               />
             <input 
               type="text" 
-              placeholder={`What's on your mind ${currentUser.name}?`} 
+              placeholder={`What's on your mind ${currentUser.firstName}?`} 
               onChange={(e)=>setDesc(e.target.value)}
               value={desc}
               />
@@ -89,10 +89,6 @@ const Share = () => {
             <div className="item">
               <img src={Map} alt="" />
               <span>Add Place</span>
-            </div>
-            <div className="item">
-              <img src={Friend} alt="" />
-              <span>Tag Friends</span>
             </div>
           </div>
           <div className="right">

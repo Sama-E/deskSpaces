@@ -8,6 +8,8 @@ const Register = () => {
 
   //Inputs
   const [ inputs, setInputs] = useState({
+    firstName:"",
+    lastName:"",
     email:"",
     password:""
   });
@@ -35,6 +37,8 @@ const Register = () => {
         <div className="right">
           <h1>Register</h1>
           <form>
+            <input type="text" placeholder="First Name" name="firstName" onChange={handleChange} />
+            <input type="text" placeholder="Last Name" name="lastName" onChange={handleChange} />
             <input type="email" placeholder="Email" name="email" onChange={handleChange} />
             <input type="password" placeholder="Password" name="password" onChange={handleChange} />
             

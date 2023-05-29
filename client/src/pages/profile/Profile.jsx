@@ -93,15 +93,15 @@ const handleFollow = () => {
             </a>
           </div>
           <div className="center">
-            <span>{data && data.name}</span>
+            <span>{data && data.firstName} {data && data.lastName}</span>
             <div className="info">
               <div className="item">
                 <PlaceIcon />
-                <span>USA</span>
+                <span>{data && data.city}</span>
               </div>
               <div className="item">
                 <LanguageIcon />
-                <span>lama.dev</span>
+                <span>{data && data.website}</span>
               </div>
             </div>
             {rIsLoading ? (
