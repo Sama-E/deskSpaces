@@ -17,9 +17,11 @@ db.query(q,[req.body.email], (err, data) => {
     const salt = bcrypt.genSaltSync(10);
     const hashedPassword = bcrypt.hashSync(req.body.password, salt);
 
-    const  q = "INSERT INTO users ( `email`,`password`) VALUE (?);"
+    const  q = "INSERT INTO users ( `firstName`, `lastName`, `email`,`password` ) VALUE (?);"
 
     const values = [
+      req.body.firstName,
+      req.body.lastName,
       req.body.email, 
       hashedPassword,
     ];
