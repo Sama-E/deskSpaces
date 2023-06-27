@@ -1,10 +1,9 @@
+import "/src/assets/css/pages/auth/register.scss";
+import FormInput from "src/components/forms/FormInput";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 
-import "/src/assets/css/pages/auth/register.scss";
-
-import FormInput from "src/components/forms/FormInput";
 
 const Register = () => {
   
@@ -86,21 +85,20 @@ const Register = () => {
 
   return (
     <div className="register">
-
-            <form onSubmit={handleSubmit}>
-            <h1>Register</h1>
-              {inputs.map((input) => (
-              <FormInput 
-                key={input.id} 
-                {...input}
-                input={inputs[input.name]}
-                onChange={onChange}
-              />
-              ))}
-            {err && err}
-            <button>Submit</button>
-            </form>
-        </div>
+      <form onSubmit={handleSubmit}>
+        <h1>Register</h1>
+          {inputs.map((input) => (
+          <FormInput 
+            key={input.id} 
+            {...input}
+            input={inputs[input.name]}
+            onChange={onChange}
+          />
+          ))}
+        {err && err}
+        <button>Submit</button>
+      </form>
+    </div>
   )
 }
 
