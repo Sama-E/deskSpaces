@@ -9,13 +9,17 @@ const AIRightBar = () => {
             <div className="chatBox">
               <div className="chatLog">
                 <div className="chatMessage">
-                  <div className="profilePic">Me</div>
+                  <div className="profilePic">
+                  <img src="/src/assets/images/noavatar.jpg"/>
+                  </div>
                   <div className="message">
                     Hello world
                   </div>
                 </div>
                 <div className="chatMessageAI">
-                  <div className="profilePic">Me</div>
+                  <div className="profilePic">
+                    <img src="/src/assets/images/chatgptpurple.jpg"/>
+                  </div>
                   <div className="message">
                     Hello world
                   </div>
@@ -24,10 +28,10 @@ const AIRightBar = () => {
             </div>
           <form>
             <textarea name="prompt" rows="2" placeholder="Ask Codex...">
+            </textarea>
             <button type="submit">
               <img src="/src/assets/images/send.svg"/>
             </button>
-            </textarea>
           </form>
         </div>
       </div>

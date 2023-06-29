@@ -38,6 +38,7 @@
           padding: 25px;
           border: 1px solid black;
           text-align: left;
+          height: 450px;
           
           .chatLog{
             display: flex;
@@ -52,16 +53,19 @@
               flex-direction: row;
               gap: 20px;
               padding: 10px;
+              width: 100%;
 
               .message{ 
                 padding: 10px;
               }
     
               .profilePic{
-                background-color: white;
-                border-radius: 50%;
-                width: 35px;
-                height: 35px;
+                img{
+
+                  border-radius: 50%;
+                  width: 35px;
+                  height: 35px;
+                }
               }
 
             }
@@ -78,10 +82,13 @@
               }
     
               .profilePic{
-                background-color: white;
-                border-radius: 50%;
-                width: 35px;
-                height: 35px;
+                img{
+
+                  border-radius: 50%;
+                  width: 35px;
+                  height: 35px;
+                  object-fit: cover;
+                }
               }
 
             }
@@ -101,14 +108,14 @@
           height: 100%;
 
           textarea{
-            width: 100%;
-            button{
-              img{
-                width: 20px;
-                height: 20px;
-              }
+            width: 80%;           
+          }
+          button{
+            img{
+              width: 30px;
+              height: 30px;
+              object-fit: cover;
             }
-
           }
         }
       }
