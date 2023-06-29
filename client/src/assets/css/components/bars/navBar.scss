@@ -5,8 +5,8 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 10px 20px;
-    height: 50px;
+    padding: 20px 20px;
+    height: 40px;
     border-bottom: 1px solid themed("border");
     position: sticky;
     top: 0;
@@ -14,51 +14,24 @@
     color:themed("textColor");
     z-index: 999;
 
+    @include mobile{
+      display: flex;
+      justify-content: space-between;
+    }
+
+    //LEFT
     .left {
       display: flex;
       align-items: center;
       gap: 30px;
-
-      span {
-        font-weight: bold;
-        font-size: 20px;
-        color: themed("logo");
-      }
-
-      .search {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        border: 1px solid themed("border");
-        border-radius: 5px;
-        padding: 5px;
-
-        input {
-          border: none;
-          width: 500px;
-          background-color: transparent;
-          color: themed("textColor");
-
-          @include mobile{
-            display: none;
-          }
-
-          @include tablet{
-            width: 200px;
-          }
-        }
-      }
     }
 
+    //RIGHT
     .right {
       display: flex;
       align-items: center;
       gap: 20px;
       padding: 5px;
-
-      @include mobile{
-        display: none;
-      }
 
       .menu_icons {
         display: flex;
@@ -78,13 +51,6 @@
         font-weight: 500;
         cursor: pointer;
 
-        @include tablet{
-          width: 200px;
-        }
-
-        @include mobile{
-          width: 200px;
-        }
 
         img {
           width: 30px;
@@ -97,32 +63,32 @@
           position: absolute;
           top: 50px;
           right: 0;
-          padding: 20px;
           background-color: white;
-          border-radius: 10px;
           z-index: 999;
           border: 1px solid lightgrey;
-          display: flex;
-          flex-direction: column;
-          gap: 10px;
-          width: 125px;
-          font-weight: 300;
-          color: gray;
-          align-items: center;
+          gap: 2px;
+          width: 160px;
+      
+          tbody{
+            display: flex;
+            flex-direction: column;
+            align-items: end;
+            justify-content: space-evenly;
+          }
+
+          tr{
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+          }
+
+          td {
+            display: flex;
+            flex-direction: column;
+            margin: 5px;
+          }
         }
-
-        button {
-          color: white;
-          width: 90px;
-          padding: 5px 5px;
-          border-radius: 5px;
-          border: 1px solid white;
-          cursor: pointer;
-          background-color: #1d63bf;
-
-        }
-
       }
     }
-  }
+  } 
 }

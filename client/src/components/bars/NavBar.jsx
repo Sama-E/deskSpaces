@@ -9,8 +9,10 @@ import WorkOutlineOutlinedIcon from '@mui/icons-material/WorkOutlineOutlined';
 import ArtTrackOutlinedIcon from '@mui/icons-material/ArtTrackOutlined';
 import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
 import CollectionsOutlinedIcon from '@mui/icons-material/CollectionsOutlined';
+import AccountBoxOutlinedIcon from '@mui/icons-material/AccountBoxOutlined';
 import GridViewOutlinedIcon from '@mui/icons-material/GridViewOutlined';
-import Logo from "/src/assets/images/deskSpaceLogo.png";
+import { TextField, InputAdornment, Button } from '@mui/material';
+
 
 import { Link, useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
@@ -31,25 +33,37 @@ const NavBar = () => {
   };
 
   
-
   return (
     <div className="navbar">
+
+      {/* LEFT SIDE - LARGE/MEDIUM SCREENS */}
       <div className="left">
+
+        {/* LOGO */}
         <Link to="/">
-          <img src={Logo} alt="desk Space" />
+          <h2>moreDeskSpace</h2>
         </Link>
-        <div className="search">
-          <SearchOutlinedIcon />
-          <input type="text" placeholder="Search ..." />
-        </div>
+
+
       </div>
+
+      {/* RIGHT SIDE - LARGE/MEDIUM SCREENS */}
       <div className="right">
+
+        {/* MENU ICONS */}
         <div className="menu_icons">
-          <ArtTrackOutlinedIcon />
-          <AccountTreeOutlinedIcon />
-          <ChecklistRtlOutlinedIcon />
-          <WorkOutlineOutlinedIcon />
-          <CollectionsOutlinedIcon />
+        {/* SEARCH */}
+        <TextField
+          variant="standard"
+          sx={{ width: 200 }}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <SearchOutlinedIcon />
+              </InputAdornment>
+            ),
+          }}
+        />
           { darkMode ?
             ( <WbSunnyOutlinedIcon onClick={toggle} /> )
             :
@@ -61,13 +75,64 @@ const NavBar = () => {
           <img src= {"/upload/" + currentUser.profilePic} alt="" />
           <span>{currentUser.firstName}</span>
           { openTab &&             
-            <div className="options">
-              <button type="submit" onClick={handleLogout}>Logout</button>
-            </div>
+            <table className="options">
+              <thead></thead>
+              <tbody>
+                <tr>
+                <Button size="small">
+                  <td>Blog</td>
+                  <td><ArtTrackOutlinedIcon /></td>
+                </Button>
+                </tr>
+                <tr>
+                <Button size="small">
+                  <td>Projects</td>
+                  <td><AccountTreeOutlinedIcon /></td>
+                </Button>
+                </tr>
+                <tr>
+                <Button size="small">
+                  <td>Recipes</td>
+                  <td><ChecklistRtlOutlinedIcon /></td>
+                </Button>
+                </tr>
+                <tr>
+                <Button size="small">
+                  <td>Job Search</td>
+                  <td><WorkOutlineOutlinedIcon /></td>
+                </Button>
+                </tr>
+                <tr>
+                <Button size="small">
+                  <td>Photos</td>
+                  <td><CollectionsOutlinedIcon /></td>
+                </Button>
+                </tr>
+                <tr>
+                <Button size="small">
+                  <td>Profile</td>
+                  <td><AccountBoxOutlinedIcon /></td>
+                </Button>
+                </tr>
+
+                <tr>
+                <Button 
+                  type="submit" 
+                  onClick={handleLogout} 
+                  size="small"
+                >
+                    <td>Logout</td>
+                </Button>
+                </tr>
+
+                </tbody>
+              <tfoot></tfoot>
+            </table>
           }
         </div>
       </div>
-    </div>
+      </div>
+      
   )
 }
 
