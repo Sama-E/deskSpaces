@@ -1,6 +1,7 @@
 import NavBar from "./components/bars/NavBar";
 import LeftBar from "./components/bars/LeftBar";
 import RightBar from "./components/bars/RightBar";
+import AIRightBar from "./components/bars/AIRightBar";
 
 import Profile from "./pages/profile/Profile";
 import Home from "./pages/home/Home";
@@ -38,11 +39,12 @@ function App() {
         <div className={`theme-${darkMode ? "dark" : "light"}`}>
           <NavBar />
           <div style={{display:"flex"}}>
-            <LeftBar />
+            {/* <LeftBar /> */}
+            {/* <RightBar /> */}
             <div style={{ flex: 6 }}>
               <Outlet />
             </div>
-            <RightBar />
+            <AIRightBar />
 
           </div>
         </div>

@@ -1,8 +1,10 @@
+
 import { useState } from "react";
 import "/src/assets/css/components/bars/airightbar.scss";
 
 
 const AIRightBar = () => {
+
 
   const [input, setInput] = useState("");
   const [chatLog,setChatLog] = useState([{
@@ -61,6 +63,7 @@ const AIRightBar = () => {
     }
   }
 
+
   return (
     <div className="rightBar">
       <div className="chatContainer">
@@ -82,6 +85,7 @@ const AIRightBar = () => {
               placeholder="Ask Codex..." 
             />
             {/* <button type="submit" onClick={getMessages}> */}
+
             <button type="submit">
               <img src="/src/assets/images/send.svg"/>
             </button>
@@ -91,6 +95,7 @@ const AIRightBar = () => {
     </div>
   )
 }
+
 
 const ChatMessage = ({ message }) => {
   return (
@@ -106,5 +111,6 @@ const ChatMessage = ({ message }) => {
   </div>
   )
 }
+
 
 export default AIRightBar;
