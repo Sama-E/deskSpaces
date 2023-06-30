@@ -25,6 +25,7 @@ const AIRightBar = () => {
         message: value
       })
     }
+    console.log(value)
     try {
       const response = await fetch('http://localhost:8801/', options)
       const data = await response.json()
@@ -84,7 +85,15 @@ const AIRightBar = () => {
         <ul className="feed">
           {currentChat?.map((chatMessage, index) => 
             <li key={index} className="feedMessage">
-              <p className="role"> {chatMessage.role} </p>
+              {chatMessage.role === 'user' ? (
+              <p className="role">
+                <img src="/src/assets/images/noavatar.jpg" />   
+              </p>
+              ) : (
+                <p className="role">
+                <img src="/src/assets/images/chatgpt.jpg" />   
+              </p>
+              )}
               <p> {chatMessage.content} </p>
             </li>
             )}

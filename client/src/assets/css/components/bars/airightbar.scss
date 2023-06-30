@@ -41,6 +41,9 @@
       }
 
       .feed{
+        display: flex;
+        flex-direction: column;
+        align-items: left;
         overflow-y: scroll;
         height: 100vh;
         width: 90%;
@@ -60,11 +63,9 @@
 
         li {
           display: flex;
-          background-color: lightblue;
-          width: 100%;
-          padding: 10px;
-          margin: 10px 0;
-          gap: 10px;
+          align-items: center;
+          width: 95%;
+          gap: 20px;
         }
 
         p{
@@ -72,9 +73,13 @@
           font-size: 14px;
           text-align: left;
 
-          .role{
-            min-width: 100px;
-          }
+            img{
+              width: 25px;
+              height: 25px;
+              object-fit: cover;
+              border-radius: 50%;
+            }
+          
         }
       }
       .bottom-section{
