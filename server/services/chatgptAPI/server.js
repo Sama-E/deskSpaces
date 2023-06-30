@@ -46,7 +46,7 @@ const PORT = 8801;
 
 //Ania Example
 
-const API_KEY = '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';
+const API_KEY = process.env.API_KEY;
 const app = express();
 
 app.use(cors());
