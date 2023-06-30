@@ -5,8 +5,8 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 10px 20px;
-    height: 50px;
+    padding: 20px 20px;
+    height: 40px;
     border-bottom: 1px solid themed("border");
     position: sticky;
     top: 0;
@@ -14,50 +14,34 @@
     color:themed("textColor");
     z-index: 999;
 
+    @include mobile{
+      display: flex;
+      justify-content: space-between;
+    }
+
+    //LEFT
     .left {
       display: flex;
       align-items: center;
       gap: 30px;
-
-      span {
-        font-weight: bold;
-        font-size: 20px;
-        color: themed("logo");
-      }
-
-      .search {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        border: 1px solid themed("border");
-        border-radius: 5px;
-        padding: 5px;
-
-        input {
-          border: none;
-          width: 500px;
-          background-color: transparent;
-          color: themed("textColor");
-
-          @include mobile{
-            display: none;
-          }
-
-          @include tablet{
-            width: 200px;
-          }
-        }
-      }
     }
 
+    //RIGHT
     .right {
       display: flex;
       align-items: center;
       gap: 20px;
       padding: 5px;
 
-      @include mobile{
-        display: none;
+      .menu_icons {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        padding: 5px;
+
+        @include mobile{
+          display: none;
+        }
       }
 
       .user {
@@ -65,10 +49,8 @@
         align-items: center;
         gap: 10px;
         font-weight: 500;
+        cursor: pointer;
 
-        @include tablet{
-          display: none;
-        }
 
         img {
           width: 30px;
@@ -77,9 +59,36 @@
           object-fit: cover;
         }
 
-        span {
+        .options {
+          position: absolute;
+          top: 50px;
+          right: 0;
+          background-color: white;
+          z-index: 999;
+          border: 1px solid lightgrey;
+          gap: 2px;
+          width: 160px;
+      
+          tbody{
+            display: flex;
+            flex-direction: column;
+            align-items: end;
+            justify-content: space-evenly;
+          }
+
+          tr{
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+          }
+
+          td {
+            display: flex;
+            flex-direction: column;
+            margin: 5px;
+          }
         }
       }
     }
-  }
+  } 
 }

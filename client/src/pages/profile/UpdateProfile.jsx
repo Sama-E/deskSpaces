@@ -1,31 +1,32 @@
 import "/src/assets/css/pages/profile/updateProfile.scss";
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import CloudUpload from "@mui/icons-material/CloudUpload";
 import { makeRequest } from "/services/axios";
 
 const UpdateProfile = ({ setOpenUpdate, user }) => {
-  // const [cover, setCover] = useState(null);
-  // const [profile, setProfile] = useState(null);
+  const [cover, setCover] = useState(null);
+  const [profile, setProfile] = useState(null);
   const [texts, setTexts] = useState({
     email: user.email,
-    name: user.name,
-    // city: user.city,
-    // website: user.website,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    city: user.city,
+    website: user.website,
   });
 
-  //Cover and Profile Pic
-  // const upload = async (file) => {
-  //   console.log(file)
-  //   try {
-  //     const formData = new FormData();
-  //     formData.append("file", file);
-  //     const res = await makeRequest.post("/upload", formData);
-  //     return res.data;
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
+  // Cover and Profile Pic
+  const upload = async (file) => {
+    console.log(file)
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      const res = await makeRequest.post("/upload", formData);
+      return res.data;
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const handleChange = (e) => {
     setTexts((prev) => ({ ...prev, [e.target.name]: [e.target.value] }));
@@ -50,20 +51,15 @@ const UpdateProfile = ({ setOpenUpdate, user }) => {
 
     //TODO: find a better way to get image URL
     
-    // let coverUrl;
-    // let profileUrl;
-    // coverUrl = cover ? await upload(cover) : user.coverPic;
-    // profileUrl = profile ? await upload(profile) : user.profilePic;
+    let coverUrl;
+    let profileUrl;
+    coverUrl = cover ? await upload(cover) : user.coverPic;
+    profileUrl = profile ? await upload(profile) : user.profilePic;
     
-  //   mutation.mutate({ ...texts, coverPic: coverUrl, profilePic: profileUrl });
-  //   setOpenUpdate(false);
-  //   setCover(null);
-  //   setProfile(null);
-  // }
-    mutation.mutate({ ...texts });
+    mutation.mutate({ ...texts, coverPic: coverUrl, profilePic: profileUrl });
     setOpenUpdate(false);
-    // setCover(null);
-    // setProfile(null);
+    setCover(null);
+    setProfile(null);
   }
 
   return (
@@ -71,19 +67,19 @@ const UpdateProfile = ({ setOpenUpdate, user }) => {
       <div className="wrapper">
         <h1>Update Your Profile</h1>
         <form>
-          {/* <div className="files">
+          <div className="files">
             <label htmlFor="cover">
               <span>Cover Picture</span>
               <div className="imgContainer">
                 <img
-                  // src={
-                  //   cover
-                  //     ? URL.createObjectURL(cover)
-                  //     : "/upload/" + user.coverPic
-                  // }
+                  src={
+                    cover
+                      ? URL.createObjectURL(cover)
+                      : "/upload/" + user.coverPic
+                  }
                   alt=""
                 />
-                <CloudUploadIcon className="icon" />
+                <CloudUpload className="icon" />
               </div>
             </label>
             <input
@@ -103,7 +99,7 @@ const UpdateProfile = ({ setOpenUpdate, user }) => {
                   }
                   alt=""
                 />
-                <CloudUploadIcon className="icon" />
+                <CloudUpload className="icon" />
               </div>
             </label>
             <input
@@ -112,7 +108,7 @@ const UpdateProfile = ({ setOpenUpdate, user }) => {
               style={{ display: "none" }}
               onChange={(e) => setProfile(e.target.files[0])}
             />
-          </div> */}
+          </div>
           <label>Email</label>
           <input
             type="text"
@@ -127,14 +123,21 @@ const UpdateProfile = ({ setOpenUpdate, user }) => {
             name="password"
             onChange={handleChange}
           /> */}
-          <label>Name</label>
+          <label>First Name</label>
           <input
             type="text"
-            value={texts.name}
+            value={texts.firstName}
             name="name"
             onChange={handleChange}
           />
-          {/* <label>Country / City</label>
+          <label>Last Name</label>
+          <input
+            type="text"
+            value={texts.lastName}
+            name="name"
+            onChange={handleChange}
+          />
+          <label>Country / City</label>
           <input
             type="text"
             name="city"
@@ -147,7 +150,7 @@ const UpdateProfile = ({ setOpenUpdate, user }) => {
             name="website"
             value={texts.website}
             onChange={handleChange}
-          /> */}
+          />
           <button onClick={handleClick}>Update</button>
         </form>
         <button className="close" onClick={() => setOpenUpdate(false)}>

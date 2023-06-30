@@ -1,0 +1,125 @@
+@import "/src/style.scss";
+
+.rightBar{
+  @include themify($themes) {
+    flex: 3;
+    position: sticky;
+    top: 70px;
+    height: calc(100vh - 70px);
+    overflow: scroll;
+    background-color: themed("bgSoft");
+
+    @include mobile{
+      display: none;
+  }
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+  
+    .chatContainer{
+      padding: 20px;
+      flex: display;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+
+      .item{
+        -webkit-box-shadow: 0px 0px 15px 1px rgba(0, 0, 0, 0.09);
+        -moz-box-shadow: 0px 0px 15px 1px rgba(0, 0, 0, 0.09);
+        box-shadow: 0px 0px 15px 1px rgba(0, 0, 0, 0.09);
+        padding: 20px;
+        margin-bottom: 20px;
+        background-color: themed("bg");
+
+        .chatBox{
+          flex:3;
+          padding: 25px;
+          border: 1px solid black;
+          text-align: left;
+          height: 450px;
+          
+          .chatLog{
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            margin: auto;
+            gap: 10px;
+            align-items: center;
+
+            .chatMessage{
+              display: flex;
+              flex-direction: row;
+              gap: 20px;
+              padding: 10px;
+              width: 100%;
+
+              .message{ 
+                padding: 10px;
+              }
+    
+              .profilePic{
+                img{
+
+                  border-radius: 50%;
+                  width: 35px;
+                  height: 35px;
+                }
+              }
+
+            }
+            .chatMessageAI{
+              display: flex;
+              flex-direction: row;
+              gap: 20px;
+              padding: 10px;
+              background-color: lightgrey;
+              width: 100%;
+
+              .message{ 
+                padding: 10px;
+              }
+    
+              .profilePic{
+                img{
+
+                  border-radius: 50%;
+                  width: 35px;
+                  height: 35px;
+                  object-fit: cover;
+                }
+              }
+
+            }
+          }
+
+        }
+
+        form{
+          flex: 1;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin: 20px 0px;
+          background-color: white;
+
+          width: 100%;
+          height: 100%;
+
+          textarea{
+            width: 80%;           
+          }
+          button{
+            img{
+              width: 30px;
+              height: 30px;
+              object-fit: cover;
+            }
+          }
+        }
+      }
+
+    }
+  }
+}

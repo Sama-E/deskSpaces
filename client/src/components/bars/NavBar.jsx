@@ -1,6 +1,5 @@
 import "/src/assets/css/components/bars/navBar.scss";
 import { DarkModeContext } from "/src/context/darkModeContext";
-
 import WbSunnyOutlinedIcon from '@mui/icons-material/WbSunnyOutlined';
 import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
 import AccountTreeOutlinedIcon from '@mui/icons-material/AccountTreeOutlined';
@@ -10,46 +9,130 @@ import WorkOutlineOutlinedIcon from '@mui/icons-material/WorkOutlineOutlined';
 import ArtTrackOutlinedIcon from '@mui/icons-material/ArtTrackOutlined';
 import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
 import CollectionsOutlinedIcon from '@mui/icons-material/CollectionsOutlined';
-import Logo from "/src/assets/images/deskSpaceLogo.png";
+import AccountBoxOutlinedIcon from '@mui/icons-material/AccountBoxOutlined';
+import GridViewOutlinedIcon from '@mui/icons-material/GridViewOutlined';
+import { TextField, InputAdornment, Button } from '@mui/material';
 
-import { Link } from "react-router-dom";
-import { useContext } from "react";
+
+import { Link, useNavigate } from "react-router-dom";
+import { useContext, useState } from "react";
 import { AuthContext } from "/src/context/authContext";
+import axios from "axios";
 
 const NavBar = () => {
 
+  const navigate = useNavigate();
   const { toggle, darkMode } = useContext(DarkModeContext);
   const { currentUser } = useContext(AuthContext);
+  const [openTab, setOpenTab] = useState(false);
 
+  const handleLogout = async (e) => {
+    e.preventDefault();
+    await axios.post("http://localhost:8800/api/auths/logout")
+    navigate("/login");
+  };
+
+  
   return (
     <div className="navbar">
+
+      {/* LEFT SIDE - LARGE/MEDIUM SCREENS */}
       <div className="left">
+
+        {/* LOGO */}
         <Link to="/">
-          <img src={Logo} alt="desk Space" />
+          <h2>moreDeskSpace</h2>
         </Link>
-        <div className="search">
-          <SearchOutlinedIcon />
-          <input type="text" placeholder="Search ..." />
-        </div>
+
+
       </div>
+
+      {/* RIGHT SIDE - LARGE/MEDIUM SCREENS */}
       <div className="right">
-        <ArtTrackOutlinedIcon />
-        <AccountTreeOutlinedIcon />
-        <ChecklistRtlOutlinedIcon />
-        <WorkOutlineOutlinedIcon />
-        <CollectionsOutlinedIcon />
-        { darkMode ?
-          ( <WbSunnyOutlinedIcon onClick={toggle} /> )
-          :
-          ( <DarkModeOutlinedIcon onClick={toggle} /> )
-        }
-        <NotificationsNoneOutlinedIcon />
-        <div className="user">
-          <img src={currentUser.profilePic} alt="" />
-          <span>{currentUser.email}</span>
+
+        {/* MENU ICONS */}
+        <div className="menu_icons">
+        {/* SEARCH */}
+        <TextField
+          variant="standard"
+          sx={{ width: 200 }}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <SearchOutlinedIcon />
+              </InputAdornment>
+            ),
+          }}
+        />
+          { darkMode ?
+            ( <WbSunnyOutlinedIcon onClick={toggle} /> )
+            :
+            ( <DarkModeOutlinedIcon onClick={toggle} /> )
+          }
+          <NotificationsNoneOutlinedIcon />
+        </div>
+        <div className="user" onClick={()=>setOpenTab(!openTab)}>
+          <img src= {"/upload/" + currentUser.profilePic} alt="" />
+          <span>{currentUser.firstName}</span>
+          { openTab &&             
+            <table className="options">
+              <thead></thead>
+              <tbody>
+                <tr>
+                <Button size="small">
+                  <td>Blog</td>
+                  <td><ArtTrackOutlinedIcon /></td>
+                </Button>
+                </tr>
+                <tr>
+                <Button size="small">
+                  <td>Projects</td>
+                  <td><AccountTreeOutlinedIcon /></td>
+                </Button>
+                </tr>
+                <tr>
+                <Button size="small">
+                  <td>Recipes</td>
+                  <td><ChecklistRtlOutlinedIcon /></td>
+                </Button>
+                </tr>
+                <tr>
+                <Button size="small">
+                  <td>Job Search</td>
+                  <td><WorkOutlineOutlinedIcon /></td>
+                </Button>
+                </tr>
+                <tr>
+                <Button size="small">
+                  <td>Photos</td>
+                  <td><CollectionsOutlinedIcon /></td>
+                </Button>
+                </tr>
+                <tr>
+                <Button size="small">
+                  <td>Profile</td>
+                  <td><AccountBoxOutlinedIcon /></td>
+                </Button>
+                </tr>
+
+                <tr>
+                <Button 
+                  type="submit" 
+                  onClick={handleLogout} 
+                  size="small"
+                >
+                    <td>Logout</td>
+                </Button>
+                </tr>
+
+                </tbody>
+              <tfoot></tfoot>
+            </table>
+          }
         </div>
       </div>
-    </div>
+      </div>
+      
   )
 }
 

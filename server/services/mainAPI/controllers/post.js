@@ -26,8 +26,8 @@ export const getPosts = (req, res) => {
     // Where currentUser id is followerUserId or postsUsersId
     const q = 
         userId !== "undefined"
-        ? `SELECT p.*, u.id AS userId, email, name FROM posts AS p JOIN users AS u ON (u.id = p.userId) WHERE p.userId = ? ORDER BY p.created_at DESC`
-        : `SELECT p.*, u.id AS userId, email, name FROM posts AS p JOIN users AS u ON (u.id = p.userId)
+        ? `SELECT p.*, u.id AS userId, email, firstName, profilePic FROM posts AS p JOIN users AS u ON (u.id = p.userId) WHERE p.userId = ? ORDER BY p.created_at DESC`
+        : `SELECT p.*, u.id AS userId, email, firstName, profilePic FROM posts AS p JOIN users AS u ON (u.id = p.userId)
     LEFT JOIN relationships AS r ON (p.userId = r.followedUserId) WHERE r.followerUserId= ? OR p.userId =?
     ORDER BY p.created_at DESC`;
 

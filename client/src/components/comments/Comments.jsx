@@ -56,7 +56,7 @@ const handleClick = async (e) => {
         <div className="comment">
           <img src={comment.profilePic} alt="" />
           <div className="info">
-            <span>{comment.name}</span>
+            <span>{comment.firstName}</span>
             <p>{comment.desc}</p>
           </div>
           <span className="date">

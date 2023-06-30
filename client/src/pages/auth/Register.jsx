@@ -1,29 +1,83 @@
-import { Link } from "react-router-dom";
+import "/src/assets/css/pages/auth/register.scss";
+import FormInput from "src/components/forms/FormInput";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 
-import "/src/assets/css/pages/auth/register.scss";
 
 const Register = () => {
+  
+  const navigate = useNavigate();
 
-  //Inputs
-  const [ inputs, setInputs] = useState({
+  const [ values, setValues] = useState({
+    firstName:"",
+    lastName:"",
     email:"",
-    password:""
+    password:"",
+    confirm_password:""
   });
 
+  const inputs = [
+    {
+      id:1,
+      name: "firstName",
+      type: "text",
+      placeholder: "First Name",
+      required: true,
+      pattern:"^[A-Za-z0-9]{3,16}$",
+      errorMessage: "First name should be 3-16 characters and shouldn't include any special characters.",
+    },
+    {
+      id:2,
+      name: "lastName",
+      type: "text",
+      placeholder: "Last Name",
+      required: true,
+      pattern:"^[A-Za-z0-9]{3,16}$",
+      errorMessage: "Last name should be 3-16 characters and shouldn't include any special characters.",
+    },
+    {
+      id:3,
+      name: "email",
+      type: "email",
+      placeholder: "Email",
+      required: true,
+      errorMessage: "Email should be a valid email address.",
+    },
+    {
+      id:4,
+      name: "password",
+      type: "password",
+      placeholder: "Password",
+      required: true,
+      pattern: `^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$`,
+      errorMessage: "Password should be 8-20 characters and include 1 letter, 1 number and 1 special character.",
+    },
+    {
+      id:5,
+      name: "confirm_password",
+      type: "password",
+      placeholder: "Confirm Password",
+      required: true,
+      pattern: values.password,
+      errorMessage: "Passwords don't match.",
+    },
+  ]
+
+  //Backend Errors
   const [err, setErr] = useState(null);
 
-  //Prev to automatically updates name values
-  const handleChange = (e) => {
-    setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
+  //Values to automatically updates name values
+  const onChange = (e) => {
+    setValues({...values, [e.target.name] : e.target.value })
+  }
 
-  const handleClick = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
 
     try{
-      await axios.post("http://localhost:8800/api/auths/register", inputs)
+      await axios.post("http://localhost:8800/api/auths/register", values)
+      navigate("/login")
     } catch (err) {
       setErr(err.response.data);
     }
@@ -31,28 +85,19 @@ const Register = () => {
 
   return (
     <div className="register">
-      <div className="card">
-        <div className="right">
-          <h1>Register</h1>
-          <form>
-            <input type="email" placeholder="Email" name="email" onChange={handleChange} />
-            <input type="password" placeholder="Password" name="password" onChange={handleChange} />
-            
-            {err && err}
-            <button onClick={handleClick}>Register</button>
-          </form>
-        </div>
-        <div className="left">
-          <h1>Hello World</h1>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod, voluptas sed sequi laboriosam voluptatibus eos ducimus dolorum reprehenderit itaque ut perspiciatis aut quis dolor tempora, sapiente fuga deserunt quo corporis?
-          </p>
-          <span>Do you have an account?</span>
-          <Link to="/login">
-            <button>Login</button>
-          </Link>
-        </div>
-      </div>
+      <form onSubmit={handleSubmit}>
+        <h1>Register</h1>
+          {inputs.map((input) => (
+          <FormInput 
+            key={input.id} 
+            {...input}
+            input={inputs[input.name]}
+            onChange={onChange}
+          />
+          ))}
+        {err && err}
+        <button>Submit</button>
+      </form>
     </div>
   )
 }
