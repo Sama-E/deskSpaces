@@ -7,6 +7,8 @@ import Profile from "./pages/profile/Profile";
 import Home from "./pages/home/Home";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
+import BlogPosts from "./pages/blog/BlogPosts";
+import BlogPost from "./pages/blog/BlogPost";
 
 import "./style.scss";
 
@@ -75,7 +77,15 @@ function App() {
         {
           path:"/profile/:id",
           element:<Profile />
-        }
+        },
+        {
+          path:"/blog/",
+          element:<BlogPosts />
+        },
+        {
+          path:"/blog/:id",
+          element:<BlogPost />
+        },
       ]
     },
     {
