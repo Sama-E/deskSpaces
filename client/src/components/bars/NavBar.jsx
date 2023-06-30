@@ -40,7 +40,7 @@ const NavBar = () => {
       <div className="left">
 
         {/* LOGO */}
-        <Link to="/">
+        <Link to="/" style={{ textDecoration: "none" }}>
           <h2>moreDeskSpace</h2>
         </Link>
 

@@ -1,47 +1,46 @@
-import { Configuration, OpenAIApi } from "openai";
 import * as dotenv from 'dotenv';
 import express from "express";
 import cors from "cors";
+const PORT = 8801;
+
 
 dotenv.config();
 
-const configuration = new Configuration({
-  apiKey: process.env.CHATGPT_SECRET_KEY,
-})
-
-const openai = new OpenAIApi(configuration);
-
+const API_KEY = process.env.API_KEY;
 const app = express();
+
 app.use(cors());
 app.use(express.json());
 
-app.get('/', async (req, res) => {
-  res.status(200).send({
-    message:'Hello'
-  })
-});
-
-app.post('/', async(req, res) => {
-  try {
-    const prompt = req.body.prompt;
-
-    const response = await openai.createCompletion({
-      model: "text-davinci-003",
-      prompt: `${prompt}`,
-      temperature: 0,
-      max_tokens: 2000,
+app.post('/', async (req, res) => {
+  const options = {
+    method: "POST",
+    headers: {
+      "Authorization" : `Bearer ${API_KEY}`,
+      "Content-Type": "application/json"
+    },
+    body:JSON.stringify({
+      model: "gpt-3.5-turbo",
+      messages: [{
+        role:"user",
+        content: req.body.message
+      }],
+      max_tokens: 100,
+      temperature: 1.5,
       top_p: 1,
       frequency_penalty: 0.5,
       presence_penalty: 0,
-    });
-
-    res.status(200).send({
-      bot: response.data.choices[0].text
     })
-    } catch (error) {
-      console.log(error);
-      res.status(500).send({ error })
+  }
+  try {
+    const response = await fetch('https://api.openai.com/v1/chat/completions', options)
+    const data = await response.json();
+    res.send(data)
+  } catch (error) {
+    console.error(error)
   }
 })
 
-app.listen(8801, () => console.log('Server running on http://localhost:8801'));
+
+
+app.listen(PORT, () => console.log('Server running on ' + PORT));
