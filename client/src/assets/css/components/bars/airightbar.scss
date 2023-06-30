@@ -41,10 +41,22 @@
       }
 
       .feed{
-        overflow: scroll;
+        overflow-y: scroll;
         height: 100vh;
         width: 90%;
-        padding: 0;
+        background-color: white;
+        border: 1px solid black;
+        box-shadow: rgba(0,0,0,0.05) 0 54px 55px,
+          rgba(0,0,0,0.05) 0 -12px 30px,
+          rgba(0,0,0,0.05) 0 4px 6px,
+          rgba(0,0,0,0.05) 0 12px 3px,
+          rgba(0,0,0,0.05) 0 -3px 5px;
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  /* Firefox */
+
+        .feed::-webkit-scrollbar {
+          display: none; /*Chrome, Safari, Opera*/
+        }
 
         li {
           display: flex;
@@ -70,6 +82,7 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
+        align-items: center;
 
         .input-container{
           position: relative;

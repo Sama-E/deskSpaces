@@ -1,11 +1,10 @@
-
 import { useState, useEffect } from "react";
 import "/src/assets/css/components/bars/airightbar.scss";
 
 
 const AIRightBar = () => {
 
-  const [value, setValue] = useState(null);
+  const [value, setValue] = useState("");
   const [message, setMessage] = useState(null);
   const [previousChats, setPreviousChats] = useState([]);
   const [currentTitle, setCurrentTitle] = useState(null);
@@ -24,13 +23,12 @@ const AIRightBar = () => {
       },
       body: JSON.stringify({
         message: value
-        // message: chatLog.map((message) => message.message).join("")
       })
     }
     try {
       const response = await fetch('http://localhost:8801/', options)
       const data = await response.json()
-      // setChatLog([...chatLog, {user: "gpt", message: `${data.choices[0].message}`}])
+      console.log(data)
       setMessage(data.choices[0].message)
     } catch (error) {
       console.error(error)
