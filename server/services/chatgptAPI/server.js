@@ -46,7 +46,7 @@ const PORT = 8801;
 
 //Ania Example
 
-const API_KEY = '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';
+const API_KEY = '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';
 const app = express();
 
 app.use(cors());
@@ -63,10 +63,10 @@ app.post('/', async (req, res) => {
       model: "gpt-3.5-turbo",
       messages: [{
         role:"user",
-        content: "how are you?"
+        content: req.body.message
       }],
       max_tokens: 100,
-      temperature: 7,
+      temperature: 1.5,
       top_p: 1,
       frequency_penalty: 0.5,
       presence_penalty: 0,
