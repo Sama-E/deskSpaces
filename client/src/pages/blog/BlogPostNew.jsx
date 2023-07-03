@@ -75,6 +75,11 @@ console.log(value)
             </div>
           ))}
         </div>
+        <div className="item">
+          <h1>Tags</h1>
+          <input type="text" id="tag" name="tag"/>
+          <button className="tagButton">Add Tag</button>
+        </div>
       </div>
     </div>
   )

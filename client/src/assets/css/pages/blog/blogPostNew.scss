@@ -48,6 +48,11 @@
         font-size: 20px;
       }
 
+      input {
+        padding: 10px;
+        border: 1px solid lightgray;
+      }
+
       .file{
         text-decoration: underline;
         cursor: pointer;
@@ -78,6 +83,14 @@
         align-items: center;
         gap: 2px;
         color: teal;
+      }
+
+      .tagButton{
+        cursor: pointer;
+        color: teal;
+        background-color: white;
+        border: 1px solid teal;
+        padding: 3px 5px;
       }
     }
   }
