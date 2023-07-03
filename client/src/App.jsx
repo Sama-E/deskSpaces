@@ -9,11 +9,12 @@ import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import BlogPosts from "./pages/blog/BlogPosts";
 import BlogPost from "./pages/blog/BlogPost";
+import BlogPostNew from "./pages/blog/BlogPostNew";
 
 import "./style.scss";
 
 import {
-  createBrowserRouter,
+createBrowserRouter,
   RouterProvider,
   Outlet,
   Navigate,
@@ -85,6 +86,10 @@ function App() {
         {
           path:"/blog/:id",
           element:<BlogPost />
+        },
+        {
+          path:"/blog/new",
+          element:<BlogPostNew />
         },
       ]
     },
