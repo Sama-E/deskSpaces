@@ -40,7 +40,8 @@ const BlogPosts = () => {
               <img src={blogPost.img} alt="" />
             </div>
             <div className="content">
-              <Link className="link" to={`/blogPost/${blogPost.id}`}>
+              <Link className="link" to={`/blog
+              ${blogPost.id}`}>
                 <h1>{blogPost.title}</h1>
                 <p>
                   {blogPost.desc}
