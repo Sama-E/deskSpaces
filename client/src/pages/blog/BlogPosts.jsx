@@ -59,11 +59,11 @@ const BlogPosts = () => {
               <Link className="link" to={`/blog
               ${blogPost.id}`}>
                 <h1>{blogPost.title}</h1>
-                  <p className="category">Category: <i>{blogPost.cat}</i></p> 
+                  <p className="category"><b>Category:</b> <i>{blogPost.cat}</i></p> 
                 <p>
                   {blogPost.body}
                 </p>
-                <p className="tag">Tags: <button>{blogPost.tag}</button></p>
+                <p className="tag"><b>Tags: </b><button>{blogPost.tag}</button></p>
                 <button>Read More</button>
               </Link>
             </div>
