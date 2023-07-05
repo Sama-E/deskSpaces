@@ -7,9 +7,34 @@
     gap: 150px;
     padding: 50px;
 
+    .categories{
+      display: flex;
+      flex-direction: row;
+      justify-content: space-evenly;
+      gap:50px;
+
+      button{
+        width: max-content;
+        padding: 10px;
+        border: none;
+        cursor: pointer;
+        background-color: white;
+        border: 1px solid rgb(44, 183, 230);
+        color: rgb(44, 183, 230);
+        margin-top: 20px;
+
+        &:hover{
+          border: 1px solid white;
+          background-color:  rgb(44, 183, 230);
+          color: black;
+        }
+      }
+    }
+
     .blogPost{
       display: flex;
       gap: 100px;
+
 
       &:nth-child(2n+1){
         flex-direction: row-reverse;

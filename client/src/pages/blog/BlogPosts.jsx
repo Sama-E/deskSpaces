@@ -1,7 +1,8 @@
 import "/src/assets/css/pages/blog/blogPosts.scss";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
+
 
 // const blogPosts = [
 //     {
@@ -33,22 +34,31 @@ import axios from "axios";
 const BlogPosts = () => {
   const [blogPosts, setBlogPosts] = useState([])
 
+  const cat = useLocation().search
+  console.log(location)
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get("http://localhost:8802/api/blogposts/");
+        const res = await axios.get(`http://localhost:8802/api/blogposts${cat}`);
         setBlogPosts(res.data);
       } catch (err) {
         console.log(err);
       }
     };
     fetchData();
-  }, []);
+  }, [cat]);
 
 
   return (
     <div className="blog">
       <div className="blogPosts">
+
+        <div className="categories">
+          <button>Technology</button>
+          <button>News</button>
+          <button>Science</button>
+        </div>
 
         {blogPosts.map((blogPost) => (
           <div className="blogPost" key={blogPost.id}>
