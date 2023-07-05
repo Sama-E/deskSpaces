@@ -41,13 +41,36 @@
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-
+        
         .link{
           text-decoration: none;
           color: inherit;
 
           h1{
             font-size: 48px;
+          }
+
+          .category{
+            font-size: 18px;
+            padding: 5px 0px;
+
+            i{
+              color: rgb(44, 183, 230);
+            }
+          }
+
+          .tag {
+            font-size: 14px;
+            button {
+              padding: 2px;
+              width: max-content;
+              border: none;
+              cursor: pointer;
+              background-color: rgb(44, 183, 230);
+              border: 1px solid rgb(44, 183, 230);
+              color: white;
+              border-radius: 5%;
+            }
           }
 
           p{
@@ -61,6 +84,7 @@
             background-color: white;
             border: 1px solid rgb(44, 183, 230);
             color: rgb(44, 183, 230);
+            margin-top: 20px;
 
             &:hover{
               border: 1px solid white;

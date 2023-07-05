@@ -36,7 +36,7 @@ const BlogPosts = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get("/blogposts");
+        const res = await axios.get("http://localhost:8802/api/blogposts/");
         setBlogPosts(res.data);
       } catch (err) {
         console.log(err);
@@ -59,9 +59,11 @@ const BlogPosts = () => {
               <Link className="link" to={`/blog
               ${blogPost.id}`}>
                 <h1>{blogPost.title}</h1>
+                  <p className="category">Category: <i>{blogPost.cat}</i></p> 
                 <p>
-                  {blogPost.desc}
+                  {blogPost.body}
                 </p>
+                <p className="tag">Tags: <button>{blogPost.tag}</button></p>
                 <button>Read More</button>
               </Link>
             </div>

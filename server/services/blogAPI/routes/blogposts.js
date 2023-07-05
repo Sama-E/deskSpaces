@@ -9,9 +9,7 @@ import {
 
 const router = express.Router();
 
-router.get("/test", (req, res) => {
-  res.json("this is post")
-});
+
 router.get("/", getBlogPosts);
 router.get("/:id", getBlogPost);
 router.post("/new", addBlogPost);
