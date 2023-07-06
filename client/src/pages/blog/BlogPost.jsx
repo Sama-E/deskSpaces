@@ -80,7 +80,7 @@ const BlogPost = () => {
           </p>
           <p className="tag"><b>Tags: </b><button>{blogPost.tag}</button></p>
         </div>
-    <BlogMenu />
+    <BlogMenu cat={blogPost.cat} />
     </div>
   )
 }
