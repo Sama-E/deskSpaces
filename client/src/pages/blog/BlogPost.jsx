@@ -35,6 +35,7 @@ const BlogPost = () => {
   }, [blogPostId]);
 
   const handleDelete = async () => {
+    
     try {
       await axios.delete(`http://localhost:8802/api/blogposts/${blogPostId}`);
       navigate("/blog")
