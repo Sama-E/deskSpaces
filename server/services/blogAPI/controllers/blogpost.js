@@ -1,6 +1,7 @@
 import { db } from "../connect.js";
 // import jwt from "jsonwebtoken";
 
+//GET All BlogPosts
 export const getBlogPosts = (req, res) => {
 
   const q = req.query.cat 
@@ -15,11 +16,10 @@ export const getBlogPosts = (req, res) => {
 
 };
 
-
+//GET Single BlogPost
 export const getBlogPost = (req, res) => {
-  const q = "SELECT `firstName`, `lastName`, `title`, `body`, `img`, `cat`, `tag`, b.updated_at FROM users u JOIN blogposts b ON u.id = b.userId WHERE b.id = ?";
+  const q = "SELECT `firstName`, `lastName`, `profilePic`, `title`, `body`, `img`, `cat`, `tag`, b.updated_at FROM users u JOIN blogposts b ON u.id = b.userId WHERE b.id = ?";
 
-  // const q = "SELECT `title`, `body`, `img`, `cat`, `tag`, b.updated_at FROM blogposts WHERE blogposts.id = ?";
 
   db.query(q, [req.params.id], (err, data) => {
     if(err) return res.send(err)
@@ -28,11 +28,11 @@ export const getBlogPost = (req, res) => {
   })
 };
 
-
+//POST (New) Single BlogPost
 export const addBlogPost = (req, res) => {};
 
-
+//PUT (Update) Single BlogPost
 export const updateBlogPost = (req, res) => {};
 
-
+//DELETE Single BlogPost
 export const deleteBlogPost = (req, res) => {};

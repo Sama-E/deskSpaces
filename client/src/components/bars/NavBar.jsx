@@ -72,7 +72,11 @@ const NavBar = () => {
           <NotificationsNoneOutlinedIcon />
         </div>
         <div className="user" onClick={()=>setOpenTab(!openTab)}>
+          {currentUser.profilePic ? (
           <img src= {"/upload/" + currentUser.profilePic} alt="" />
+          ):(
+            <img src="/images/noavatar.jpg" alt="" />
+          )}
           <span>{currentUser.firstName}</span>
           { openTab &&             
             <table className="options">
