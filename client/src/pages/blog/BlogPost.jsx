@@ -1,21 +1,52 @@
 import "/src/assets/css/pages/blog/blogPost.scss";
+import BlogMenu from "./BlogMenu";
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined';
-import { Link } from "react-router-dom";
-import BlogMenu from "./BlogMenu";
+import { Link, useLocation } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "src/context/authContext";
+import moment from "moment";
+import axios from "axios";
+
 
 
 const BlogPost = () => {
+  const [blogPost, setBlogPost] = useState({})
+
+  const location = useLocation()
+
+  //Get blogPost from pathname
+  const blogPostId = location.pathname.split("/")[2];
+
+  //Current User
+  const { currentUser } = useContext(AuthContext);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get(`http://localhost:8802/api/blogposts/${blogPostId}`);
+        setBlogPost(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchData();
+  }, [blogPostId]);
+
+
   return (
     <div className="blogPost">
       <div className="content">
-        <img src="https://images.pexels.com/photos/7008010/pexels-photo-7008010.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" />
+        <img src={blogPost?.img} />
           <div className="user">
             <img src="https://images.pexels.com/photos/7008010/pexels-photo-7008010.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" />
             <div className="info">
-              <p>Posted 2 days ago</p>
-              <p className="userName">John</p>
+              
+              <p>Posted {moment(blogPost.updated_at).fromNow()}</p>
+              <p className="userName">{blogPost.firstName} {blogPost.lastName}</p>
             </div>
+            {
+            currentUser.id === blogPost.userId  && (
             <div className="edit">
               <Link to = "{`write?edit=2`}">
                 <ModeEditOutlineOutlinedIcon />
@@ -24,22 +55,14 @@ const BlogPost = () => {
                 <DeleteOutlineOutlinedIcon />
               </Link>
             </div>
+            )}
           </div>
-          <h1> Lorem ipsum dolor sit amet </h1>
+          <h1> {blogPost.title} </h1>
+          <p className="category"><b>Category:</b> <i>{blogPost.cat}</i></p> 
           <p>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </p>
-            <br />
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </p>
-            <br />
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </p>
-            <br />
+          {blogPost.body}
           </p>
+          <p className="tag"><b>Tags: </b><button>{blogPost.tag}</button></p>
         </div>
     <BlogMenu />
     </div>

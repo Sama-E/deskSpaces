@@ -16,7 +16,17 @@ export const getBlogPosts = (req, res) => {
 };
 
 
-export const getBlogPost = (req, res) => {};
+export const getBlogPost = (req, res) => {
+  const q = "SELECT `firstName`, `lastName`, `title`, `body`, `img`, `cat`, `tag`, b.updated_at FROM users u JOIN blogposts b ON u.id = b.userId WHERE b.id = ?";
+
+  // const q = "SELECT `title`, `body`, `img`, `cat`, `tag`, b.updated_at FROM blogposts WHERE blogposts.id = ?";
+
+  db.query(q, [req.params.id], (err, data) => {
+    if(err) return res.send(err)
+
+    return res.status(200).json(data[0]);
+  })
+};
 
 
 export const addBlogPost = (req, res) => {};

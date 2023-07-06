@@ -35,7 +35,6 @@ const BlogPosts = () => {
   const [blogPosts, setBlogPosts] = useState([])
 
   const cat = useLocation().search
-  console.log(location)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -55,9 +54,15 @@ const BlogPosts = () => {
       <div className="blogPosts">
 
         <div className="categories">
-          <button>Technology</button>
-          <button>News</button>
-          <button>Science</button>
+          <Link className="link" to="/blog?cat=Technology">
+            <button>Technology</button>
+          </Link>
+          <Link className="link" to="/blog?cat=News">
+            <button>News</button>
+          </Link>
+          <Link className="link" to="/blog?cat=Science">
+            <button>Science</button>
+          </Link>
         </div>
 
         {blogPosts.map((blogPost) => (
@@ -66,8 +71,7 @@ const BlogPosts = () => {
               <img src={blogPost.img} alt="" />
             </div>
             <div className="content">
-              <Link className="link" to={`/blog
-              ${blogPost.id}`}>
+              <Link className="link" to={`/blog/${blogPost.id}`}>
                 <h1>{blogPost.title}</h1>
                   <p className="category"><b>Category:</b> <i>{blogPost.cat}</i></p> 
                 <p>
