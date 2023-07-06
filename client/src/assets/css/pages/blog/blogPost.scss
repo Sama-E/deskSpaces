@@ -37,7 +37,8 @@
 
       .edit {
         display: flex;
-        gap: 5px;
+        gap: 10px;
+        margin-left: 20px;
       }
     }
 
@@ -46,9 +47,32 @@
       color: #333;
     }
 
+    .category{
+      font-size: 17px;
+      padding: 5px 0px;
+
+      i{
+        color: rgb(44, 183, 230);
+      }
+    }
+
     p{
       text-align: justify;
       line-height: 30px;
+    }
+
+    .tag {
+      font-size: 14px;
+      button {
+        padding: 2px;
+        width: max-content;
+        border: none;
+        cursor: pointer;
+        background-color: rgb(44, 183, 230);
+        border: 1px solid rgb(44, 183, 230);
+        color: white;
+        border-radius: 5%;
+      }
     }
   }
 

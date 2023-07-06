@@ -18,7 +18,7 @@ export const getBlogPosts = (req, res) => {
 
 //GET Single BlogPost
 export const getBlogPost = (req, res) => {
-  const q = "SELECT `firstName`, `lastName`, `profilePic`, `title`, `body`, `img`, `cat`, `tag`, b.updated_at FROM users u JOIN blogposts b ON u.id = b.userId WHERE b.id = ?";
+  const q = "SELECT `firstName`, `lastName`, `profilePic`, `title`, `body`, `img`, `cat`, `tag`, b.userId , b.updated_at FROM users u JOIN blogposts b ON u.id = b.userId WHERE b.id = ?";
 
 
   db.query(q, [req.params.id], (err, data) => {
