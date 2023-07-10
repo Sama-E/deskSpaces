@@ -64,7 +64,7 @@ const BlogPost = () => {
             {
             currentUser.id === blogPost.userId  && (
             <div className="edit">
-              <Link to = "{`write?edit=2`}">
+              <Link to = {`/blog/new?edit=2`} state={blogPost}>
                 <ModeEditOutlineOutlinedIcon />
               </Link>
               <Link to = "">

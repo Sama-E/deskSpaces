@@ -64,11 +64,11 @@ const NavBar = () => {
             ),
           }}
         />
-          { darkMode ?
+          {/* { darkMode ?
             ( <WbSunnyOutlinedIcon onClick={toggle} /> )
             :
             ( <DarkModeOutlinedIcon onClick={toggle} /> )
-          }
+          } */}
           <NotificationsNoneOutlinedIcon />
         </div>
         <div className="user" onClick={()=>setOpenTab(!openTab)}>
@@ -83,10 +83,12 @@ const NavBar = () => {
               <thead></thead>
               <tbody>
                 <tr>
-                <Button size="small">
-                  <td>Blog</td>
-                  <td><ArtTrackOutlinedIcon /></td>
-                </Button>
+                <Link to="/blog/">
+                  <Button size="small">
+                    <td>Blog</td>
+                    <td><ArtTrackOutlinedIcon /></td>
+                  </Button>
+                </Link>
                 </tr>
                 <tr>
                 <Button size="small">
@@ -113,10 +115,12 @@ const NavBar = () => {
                 </Button>
                 </tr>
                 <tr>
-                <Button size="small">
-                  <td>Profile</td>
-                  <td><AccountBoxOutlinedIcon /></td>
-                </Button>
+                <Link to={`/profile/${currentUser.id}`}>
+                  <Button size="small">
+                    <td>Profile</td>
+                    <td><AccountBoxOutlinedIcon /></td>
+                  </Button>
+                </Link>
                 </tr>
 
                 <tr>

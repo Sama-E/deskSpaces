@@ -29,7 +29,11 @@ export const getBlogPost = (req, res) => {
 };
 
 //POST (New) Single BlogPost
-export const addBlogPost = (req, res) => {};
+export const addBlogPost = (req, res) => {
+  
+};
+
+
 
 //PUT (Update) Single BlogPost
 export const updateBlogPost = (req, res) => {};
