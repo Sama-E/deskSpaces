@@ -36,7 +36,7 @@ function App() {
 
   const queryClient = new QueryClient();
 
-  const Layout = () => {
+  const AILayout = () => {
     return(
       <QueryClientProvider client={queryClient}>
         <div className={`theme-${darkMode ? "dark" : "light"}`}>
@@ -55,17 +55,18 @@ function App() {
     );
   }
 
-  const BlogLayout = () => {
+  const Layout = () => {
     return(
+      <QueryClientProvider client={queryClient}>
         <div className={`theme-${darkMode ? "dark" : "light"}`}>
           <NavBar />
           <div style={{display:"flex"}}>
             <div style={{ flex: 6 }}>
               <Outlet />
             </div>
-            <AIRightBar />
           </div>
         </div>
+      </QueryClientProvider>
     );
   }
 
@@ -81,7 +82,7 @@ function App() {
       path: "/",
       element: (
         <ProtectedRoute>
-          <Layout />
+          <AILayout />
         </ProtectedRoute>
       ),
       children: [
@@ -90,16 +91,20 @@ function App() {
           element:<Home />
         },
         {
-          path:"/profile/:id",
-          element:<Profile />
+          path:"/blog/:id",
+          element:<BlogPost />
+        },
+        {
+          path:"/blog/new",
+          element:<BlogPostNew />
         },
       ]
     },
     {
-      path: "/blog",
+      path: "/",
       element: (
         <ProtectedRoute>
-          <BlogLayout />
+          <Layout />
         </ProtectedRoute>
       ),
       children: [
@@ -108,12 +113,8 @@ function App() {
           element:<BlogPosts />
         },
         {
-          path:"/blog/:id",
-          element:<BlogPost />
-        },
-        {
-          path:"/blog/new",
-          element:<BlogPostNew />
+          path:"/profile/:id",
+          element:<Profile />
         },
       ]
     },

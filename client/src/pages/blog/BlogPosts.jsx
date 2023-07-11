@@ -1,26 +1,23 @@
 import "/src/assets/css/pages/blog/blogPosts.scss";
 import { Link, useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
-import axios from "axios";
+// import { useEffect, useState } from "react";
+// import axios from "axios";
+
+import { useQuery } from '@tanstack/react-query';
+import { makeRequestBlog } from "/services/axios";
 
 
 const BlogPosts = () => {
-  const [blogPosts, setBlogPosts] = useState([])
-
-  const cat = useLocation().search
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await axios.get(`http://localhost:8802/api/blogposts${cat}`);
-        setBlogPosts(res.data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    fetchData();
-  }, [cat]);
-
+  // Category Search
+  const cat = useLocation().search;
+  
+  //Get All Blog posts
+  //Via makeRequest to access posts from server
+  const { isLoading, error, data } = useQuery(["blogposts"], () => 
+    makeRequestBlog.get("/blogposts").then(res => {
+      return res.data;
+    })
+  );
 
   return (
     <div className="blog">
@@ -41,7 +38,10 @@ const BlogPosts = () => {
           </Link>
         </div>
 
-        {blogPosts.map((blogPost) => (
+        {error ? "Something went wrong!"
+        :(isLoading 
+        ? "Loading"
+        : data.map((blogPost) => (
           <div className="blogPost" key={blogPost.id}>
             <div className="img">
               <img src={blogPost.img} alt="" />
@@ -59,7 +59,7 @@ const BlogPosts = () => {
             </div>
             <hr />
           </div>
-        ))}
+        )))}
 
       </div>
     </div>

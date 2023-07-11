@@ -7,12 +7,12 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "src/context/authContext";
 import moment from "moment";
 import axios from "axios";
+import { useQuery } from '@tanstack/react-query';
+import { makeRequestBlog } from "/services/axios";
 
 
 
 const BlogPost = () => {
-  const [blogPost, setBlogPost] = useState({})
-
   const location = useLocation()
   const navigate = useNavigate();
 
@@ -22,65 +22,61 @@ const BlogPost = () => {
   //Current User
   const { currentUser } = useContext(AuthContext);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await axios.get(`http://localhost:8802/api/blogposts/${blogPostId}`);
-        setBlogPost(res.data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    fetchData();
-  }, [blogPostId]);
-
-  const handleDelete = async () => {
+  // const handleDelete = async () => {
     
-    try {
-      await axios.delete(`http://localhost:8802/api/blogposts/${blogPostId}`);
-      navigate("/blog")
-    } catch (err){
-      console.log(err);
-    }
-  }
+  //   try {
+  //     await axios.delete(`http://localhost:8802/api/blogposts/${blogPostId}`);
+  //     navigate("/blog")
+  //   } catch (err){
+  //     console.log(err);
+  //   }
+  // }
+
+  //Get One Blog post
+  //Via makeRequest to access posts from server
+  const { isLoading, error, data } = useQuery(["blogposts"], () => 
+  makeRequestBlog.get(`/blogposts/${blogPostId}`).then(res => {
+    return res.data;
+  })
+);
+
 
 
   return (
     <div className="blogPost">
       <div className="content">
-        <img src={blogPost?.img} />
+        <img src={data?.img} />
           <div className="user">
-            {/* <img src="https://images.pexels.com/photos/7008010/pexels-photo-7008010.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" /> */}
 
-            <img src={blogPost.profilePic || "/images/noavatar.jpg"}
+            <img src={data.profilePic || "/images/noavatar.jpg"}
             alt=""
             />
 
             <div className="info">
               
-              <p>Posted {moment(blogPost.updated_at).fromNow()}</p>
-              <p className="userName">{blogPost.firstName} {blogPost.lastName}</p>
+              <p>Posted {moment(data.updated_at).fromNow()}</p>
+              <p className="userName">{data.firstName} {data.lastName}</p>
             </div>
             {
-            currentUser.id === blogPost.userId  && (
+            currentUser.id === data.userId  && (
             <div className="edit">
-              <Link to = {`/blog/new?edit=2`} state={blogPost}>
+              <Link to = {`/blog/new?edit=2`} state={data}>
                 <ModeEditOutlineOutlinedIcon />
               </Link>
               <Link to = "">
-                <DeleteOutlineOutlinedIcon onClick={handleDelete} />
+                <DeleteOutlineOutlinedIcon />
               </Link>
             </div>
             )}
           </div>
-          <h1> {blogPost.title} </h1>
-          <p className="category"><b>Category:</b> <i>{blogPost.cat}</i></p> 
+          <h1> {data.title} </h1>
+          <p className="category"><b>Category:</b> <i>{data.cat}</i></p> 
           <p>
-          {blogPost.body}
+          {data.body}
           </p>
-          <p className="tag"><b>Tags: </b><button>{blogPost.tag}</button></p>
+          <p className="tag"><b>Tags: </b><button>{data.tag}</button></p>
         </div>
-    <BlogMenu cat={blogPost.cat} />
+      <BlogMenu cat={data.cat} />
     </div>
   )
 }
