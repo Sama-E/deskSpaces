@@ -18,7 +18,7 @@ export const getBlogPosts = (req, res) => {
 
 //GET Single BlogPost
 export const getBlogPost = (req, res) => {
-  const q = "SELECT `firstName`, `lastName`, `profilePic`, `title`, `body`, `img`, `cat`, `tag`, b.userId , b.updated_at FROM users u JOIN blogposts b ON u.id = b.userId WHERE b.id = ?";
+  const q = "SELECT `firstName`, `lastName`, `profilePic`, `title`, `body`, `img`, `cat`, `tag`, b.id, b.userId , b.updated_at FROM users u JOIN blogposts b ON u.id = b.userId WHERE b.id = ?";
 
 
   db.query(q, [req.params.id], (err, data) => {
@@ -30,13 +30,56 @@ export const getBlogPost = (req, res) => {
 
 //POST (New) Single BlogPost
 export const addBlogPost = (req, res) => {
+  const token = req.cookies.accessToken;
+  if (!token) return res.status(401).json("You are not authenticated.");
+
+  jwt.verify(token, "secretkey", (err, userInfo) => {
+    if (err) return res.status(403).json("Token is not valid!");
   
+    const q = "INSERT INTO blogposts(`title`, `body`,`img`, `cat`, `userId`) VALUES (?)";
+
+    const values = [
+      req.body.title,
+      req.body.body,
+      req.body.img,
+      req.body.cat,
+      userInfo.id,
+    ];
+
+    db.query(q, [values], (err, data) => {
+      if (err) return res.status(500).json(err);
+      return res.json("Post has been created.");
+    });
+  });
 };
 
 
 
 //PUT (Update) Single BlogPost
-export const updateBlogPost = (req, res) => {};
+export const updateBlogPost = (req, res) => {
+  const token = req.cookies.accessToken;
+  if (!token) return res.status(401).json("You are not authenticated.");
+
+  jwt.verify(token, "secretkey", (err, userInfo) => {
+    if (err) return res.status(403).json("Token is not valid!");
+
+    const blogpostId = req.params.id
+  
+    const q = "UPDATE blogposts SET `title`= ?, `body`= ?,`img`= ?, `cat`= ? WHERE `id` = ? AND `userId` = ?";
+
+    const values = [
+      req.body.title,
+      req.body.body,
+      req.body.img,
+      req.body.cat,
+    ];
+
+    db.query(q, [...values, blogpostId, userInfo.id], (err, data) => {
+      if (err) return res.status(500).json(err);
+      return res.json("Post has been updated.");
+    });
+  });
+};
 
 //DELETE Single BlogPost
 export const deleteBlogPost = (req, res) => {

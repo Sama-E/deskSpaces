@@ -36,6 +36,9 @@ const BlogPosts = () => {
           <Link className="link" to="/blog?cat=Science">
             <button>Science</button>
           </Link>
+          <Link className="link" to="/blog/new">
+            <button>New Blog Post</button>
+          </Link>
         </div>
 
         {blogPosts.map((blogPost) => (

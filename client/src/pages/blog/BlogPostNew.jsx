@@ -1,3 +1,4 @@
+import moment from "moment";
 import "/src/assets/css/pages/blog/blogPostNew.scss";
 import axios from "axios";
 import React, { useState } from 'react';
@@ -54,6 +55,7 @@ const BlogPostNew = () => {
   const [file, setFile] = useState(null);
   const [cat, setCat] = useState(state?.cat ||"");
 
+  console.log(cat)
 
   const upload = async () => {
     try{
@@ -72,9 +74,21 @@ const handlePublish = async (e) => {
   const imgUrl = upload();
 
   try {
-
+    state 
+      ? await axios.put(`http://localhost:8802/api/blogposts/${state.id}`, {
+        title,
+        body: value,
+        cat,
+        img: file ? imgUrl : "",
+      })
+      : await axios.post(`http://localhost:8802/api/blogposts/new`, {
+        title,
+        body: value,
+        cat,
+        img: file ? imgUrl : "",
+      })
   } catch (err) {
-
+    console.log(err)
   }
 }
 
@@ -92,7 +106,7 @@ const handlePublish = async (e) => {
           <ReactQuill 
             className="editor" 
             theme="snow" 
-            value={value} 
+            value={value}
             onChange={setValue} />
         </div>
       </div>
@@ -125,7 +139,7 @@ const handlePublish = async (e) => {
               <input 
                 key={category.id} 
                 type="radio"
-                checked={category.name === category.name}
+                checked={cat === category.name}
                 name="cat" 
                 value={category.name} 
                 id={category.name}
