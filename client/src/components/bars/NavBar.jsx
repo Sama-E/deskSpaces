@@ -26,9 +26,11 @@ const NavBar = () => {
   const { currentUser } = useContext(AuthContext);
   const [openTab, setOpenTab] = useState(false);
 
+  const { logout } = useContext(AuthContext);
+
   const handleLogout = async (e) => {
     e.preventDefault();
-    await axios.post("http://localhost:8800/api/auths/logout")
+    logout();
     navigate("/login");
   };
 

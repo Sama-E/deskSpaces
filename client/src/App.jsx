@@ -55,6 +55,20 @@ function App() {
     );
   }
 
+  const BlogLayout = () => {
+    return(
+        <div className={`theme-${darkMode ? "dark" : "light"}`}>
+          <NavBar />
+          <div style={{display:"flex"}}>
+            <div style={{ flex: 6 }}>
+              <Outlet />
+            </div>
+            <AIRightBar />
+          </div>
+        </div>
+    );
+  }
+
   const ProtectedRoute = ({children}) => {
     if (!currentUser) {
       return <Navigate to="/login" />
@@ -79,6 +93,16 @@ function App() {
           path:"/profile/:id",
           element:<Profile />
         },
+      ]
+    },
+    {
+      path: "/blog",
+      element: (
+        <ProtectedRoute>
+          <BlogLayout />
+        </ProtectedRoute>
+      ),
+      children: [
         {
           path:"/blog/",
           element:<BlogPosts />
