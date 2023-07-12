@@ -26,9 +26,11 @@ const NavBar = () => {
   const { currentUser } = useContext(AuthContext);
   const [openTab, setOpenTab] = useState(false);
 
+  const { logout } = useContext(AuthContext);
+
   const handleLogout = async (e) => {
     e.preventDefault();
-    await axios.post("http://localhost:8800/api/auths/logout")
+    logout();
     navigate("/login");
   };
 
@@ -64,25 +66,31 @@ const NavBar = () => {
             ),
           }}
         />
-          { darkMode ?
+          {/* { darkMode ?
             ( <WbSunnyOutlinedIcon onClick={toggle} /> )
             :
             ( <DarkModeOutlinedIcon onClick={toggle} /> )
-          }
+          } */}
           <NotificationsNoneOutlinedIcon />
         </div>
         <div className="user" onClick={()=>setOpenTab(!openTab)}>
+          {currentUser.profilePic ? (
           <img src= {"/upload/" + currentUser.profilePic} alt="" />
+          ):(
+            <img src="/images/noavatar.jpg" alt="" />
+          )}
           <span>{currentUser.firstName}</span>
           { openTab &&             
             <table className="options">
               <thead></thead>
               <tbody>
                 <tr>
-                <Button size="small">
-                  <td>Blog</td>
-                  <td><ArtTrackOutlinedIcon /></td>
-                </Button>
+                <Link to="/blog/">
+                  <Button size="small">
+                    <td>Blog</td>
+                    <td><ArtTrackOutlinedIcon /></td>
+                  </Button>
+                </Link>
                 </tr>
                 <tr>
                 <Button size="small">
@@ -109,10 +117,12 @@ const NavBar = () => {
                 </Button>
                 </tr>
                 <tr>
-                <Button size="small">
-                  <td>Profile</td>
-                  <td><AccountBoxOutlinedIcon /></td>
-                </Button>
+                <Link to={`/profile/${currentUser.id}`}>
+                  <Button size="small">
+                    <td>Profile</td>
+                    <td><AccountBoxOutlinedIcon /></td>
+                  </Button>
+                </Link>
                 </tr>
 
                 <tr>
