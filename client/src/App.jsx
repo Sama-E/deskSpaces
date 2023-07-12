@@ -92,16 +92,8 @@ function App() {
           element:<Home />
         },
         {
-          path:"/blog/:id",
-          element:<BlogPost />
-        },
-        {
           path:"/blog/new",
           element:<BlogPostNew />
-        },
-        {
-          path:"/blog/category/:cat",
-          element:<BlogCatSearch />
         },
       ]
     },
@@ -116,6 +108,14 @@ function App() {
         {
           path:"/blog/",
           element:<BlogPosts />
+        },
+        {
+          path:"/blog/:id",
+          element:<BlogPost />
+        },
+        {
+          path:"/blog/category/:cat",
+          element:<BlogCatSearch />
         },
         {
           path:"/profile/:id",
