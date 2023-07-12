@@ -1,10 +1,13 @@
 import moment from "moment";
 import "/src/assets/css/pages/blog/blogPostNew.scss";
 import axios from "axios";
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { AuthContext } from "../../context/authContext";
+import { makeRequestBlog } from "/services/axios";
+import { useMutation } from "@tanstack/react-query";
 
 
 const Categories = [
@@ -15,13 +18,13 @@ const Categories = [
   },
   {
     id: 2,
-    name: "algorithms",
-    title:"Algorithms",
+    name: "news",
+    title:"News",
   },
   {
     id: 3,
-    name: "real_estate",
-    title:"Real Estate",
+    name: "business",
+    title:"Business",
   },
   {
     id: 4,
@@ -30,22 +33,16 @@ const Categories = [
   },
   {
     id: 5,
-    name: "economics",
-    title:"Economics",
-  },
-  {
-    id: 6,
-    name: "blockchain",
-    title:"BlockChain",
-  },
-  {
-    id: 6,
     name: "science",
     title:"Science",
   },
 ]
 
 const BlogPostNew = () => {
+  const {currentUser} = useContext(AuthContext);
+
+  const navigate = useNavigate();
+
   //Edit blogpost state
   const state = useLocation().state
 
@@ -54,38 +51,66 @@ const BlogPostNew = () => {
   const [title, setTitle] = useState(state?.title ||"");
   const [file, setFile] = useState(null);
   const [cat, setCat] = useState(state?.cat ||"");
+  const [tag, setTag] = useState(state?.tag ||"");
 
-  console.log(cat)
-
-  const upload = async () => {
-    try{
+  const upload = async (file) => {
+    try {
       const formData = new FormData();
-      formData.append("file", file)
-      const res = await axios.post("http://localhost:8802/api/upload", formData)
+      formData.append("file", file);
+      const res = await makeRequestBlog.post("/upload", formData);
       return res.data;
     } catch (err) {
-      console.log(err)
-
+      console.log(err);
     }
-  }
+  };
+
+//New BlogPost Mutation
+
+//Mutation updates new blogposts
+const mutationNew = useMutation({
+  mutationFn:
+    (newBlogPost) =>{
+      return makeRequestBlog.post("/blogposts/new", newBlogPost);
+    },
+  onSuccess: () => {
+    navigate("/blog");
+  },
+});
+
+//Update BlogPost Mutation
+
+//Mutation updates blogposts
+const mutationUpdate = useMutation({
+  mutationFn:
+    (updateBlogPost) =>{
+      return makeRequestBlog.put(`/blogposts/${state.id}`, updateBlogPost);
+    },
+  onSuccess: () => {
+    navigate("/blog");
+  },
+});
 
 const handlePublish = async (e) => {
   e.preventDefault();
-  const imgUrl = upload();
+  let imgUrl ="";
+
+  imgUrl = await upload(file);
 
   try {
     state 
-      ? await axios.put(`http://localhost:8802/api/blogposts/${state.id}`, {
+      ? mutationUpdate.mutate({
         title,
         body: value,
         cat,
+        tag,
         img: file ? imgUrl : "",
       })
-      : await axios.post(`http://localhost:8802/api/blogposts/new`, {
+      : mutationNew.mutate({
         title,
         body: value,
         cat,
-        img: file ? imgUrl : "",
+        tag,
+        img: imgUrl,
       })
   } catch (err) {
     console.log(err)
@@ -114,9 +139,6 @@ const handlePublish = async (e) => {
         <div className="item">
           <h1>Publish</h1>
           <p>
-            <b>Status: </b> Draft
-          </p>
-          <p>
             <b>Visibility: </b> Public
           </p>
           <input 
@@ -128,7 +150,6 @@ const handlePublish = async (e) => {
           />
           <label className="file" htmlFor="file">Upload Image</label>
           <div className="buttons">
-            <button>Save as a draft</button>
             <button onClick={handlePublish}>Publish</button>
           </div>
         </div>
@@ -139,10 +160,10 @@ const handlePublish = async (e) => {
               <input 
                 key={category.id} 
                 type="radio"
-                checked={cat === category.name}
+                checked={cat === category.title}
                 name="cat" 
-                value={category.name} 
-                id={category.name}
+                value={category.title} 
+                id={category.title}
                 onChange={(e) => setCat(e.target.value)}
               />
               <label htmlFor={category.name}>{category.title}</label>
@@ -151,8 +172,13 @@ const handlePublish = async (e) => {
         </div>
         <div className="item">
           <h1>Tags</h1>
-          <input type="text" id="tag" name="tag"/>
-          <button className="tagButton">Add Tag</button>
+          <input 
+            type="text" 
+            id="tag" 
+            value={tag} 
+            name="tag"
+            onChange={(e) => setTag(e.target.value)}
+          />
         </div>
       </div>
     </div>

@@ -9,6 +9,7 @@ import moment from "moment";
 import axios from "axios";
 import { useQuery } from '@tanstack/react-query';
 import { makeRequestBlog } from "/services/axios";
+import DOMPurify from "dompurify";
 
 
 
@@ -34,21 +35,29 @@ const BlogPost = () => {
 
   //Get One Blog post
   //Via makeRequest to access posts from server
-  const { isLoading, error, data } = useQuery(["blogposts"], () => 
-  makeRequestBlog.get(`/blogposts/${blogPostId}`).then(res => {
-    return res.data;
-  })
-);
+  const { data } = useQuery({
+    queryKey: ["blogposts"], 
+    queryFn: () => 
+      makeRequestBlog.get(`/blogposts/${blogPostId}`)
+        .then(res => {
+          console.log(res.data)
+          return res.data;
+        }),
+  });
 
+  const getText = (html) =>{
+    const doc = new DOMParser().parseFromString(html, "text/html")
+    return doc.body.textContent
+  }
 
 
   return (
     <div className="blogPost">
       <div className="content">
-        <img src={data?.img} />
+        <img src={"/upload/" + data.img} />
           <div className="user">
 
-            <img src={data.profilePic || "/images/noavatar.jpg"}
+            <img src={"/upload/" + data.profilePic || "/images/noavatar.jpg"}
             alt=""
             />
 
@@ -71,8 +80,10 @@ const BlogPost = () => {
           </div>
           <h1> {data.title} </h1>
           <p className="category"><b>Category:</b> <i>{data.cat}</i></p> 
-          <p>
-          {data.body}
+          <p
+          dangerouslySetInnerHTML={{
+            __html: DOMPurify.sanitize(data.body),
+          }}>
           </p>
           <p className="tag"><b>Tags: </b><button>{data.tag}</button></p>
         </div>

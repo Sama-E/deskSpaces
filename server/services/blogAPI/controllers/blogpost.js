@@ -36,13 +36,14 @@ export const addBlogPost = (req, res) => {
   jwt.verify(token, "secretkey", (err, userInfo) => {
     if (err) return res.status(403).json("Token is not valid!");
   
-    const q = "INSERT INTO blogposts(`title`, `body`,`img`, `cat`, `userId`) VALUES (?)";
+    const q = "INSERT INTO blogposts(`title`, `body`,`img`, `cat`, `tag`, `userId`) VALUES (?)";
 
     const values = [
       req.body.title,
       req.body.body,
       req.body.img,
       req.body.cat,
+      req.body.tag,
       userInfo.id,
     ];
 

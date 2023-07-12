@@ -29,10 +29,11 @@ const storage = multer.diskStorage({
 });
 
 //Upload Files(Images) with multer
-const upload = multer({ storage: storage });
+const upload = multer({ storage : storage });
 
-app.post("/api/upload", upload.single("file"), (req, res) => {
+app.post("/api/upload", upload.single("file"), function (req, res) {
   const file = req.file;
+  console.log(file)
   res.status(200).json(file.filename);
 });
 

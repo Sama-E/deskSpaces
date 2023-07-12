@@ -1,72 +1,35 @@
-import "/src/assets/css/pages/blog/blogPosts.scss";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { makeRequestBlog } from "/services/axios";
-import { useState } from "react";
+import { useQuery } from '@tanstack/react-query';
+import React from 'react'
+import { Link, useLocation } from 'react-router-dom';
+import { makeRequestBlog } from '/services/axios';
 
-const BlogPosts = () => {
 
-  const Categories = [
-    {
-      id: 1,
-      name: "technology",
-      title:"Technology",
-    },
-    {
-      id: 2,
-      name: "news",
-      title:"News",
-    },
-    {
-      id: 3,
-      name: "business",
-      title:"Business",
-    },
-    {
-      id: 4,
-      name: "food",
-      title:"Food",
-    },
-    {
-      id: 5,
-      name: "science",
-      title:"Science",
-    },
-  ]
-  
+const BlogCatSearch = ({cat}) => {
+
   //Get All Blog posts
   //Via makeRequest to access posts from server
   const { isLoading, error, data } = useQuery({
     queryKey: ['blogposts'], 
     queryFn: () => 
-      makeRequestBlog.get("/blogposts")
+      makeRequestBlog.get(`/blogposts?cat=${cat}`)
       .then(res => {
         return res.data;
       }),
   });
+  console.log(cat)
+  console.log(data)
 
 
   const getText = (html) =>{
     const doc = new DOMParser().parseFromString(html, "text/html")
     return doc.body.textContent
   }
-
-  return (
-    <div className="blog">
+  
+  
+    return (
+      <div className="blog">
       <div className="blogPosts">
         <div className="categories">
-        {Categories.map(category => (
-            <div className="cat">
-              <Link className="link" to={`/blog/category/${category.name}`}>
-                <button
-                  key={category.id} 
-                  value={category.title}
-                >
-                  {category.title}
-                </button>
-              </Link>
-            </div>
-          ))}
           <Link className="link" to="/blog/new">
             <button>New Blog Post</button>
           </Link>
@@ -78,7 +41,7 @@ const BlogPosts = () => {
         : data.map((blogPost) => (
           <div className="blogPost" key={blogPost.id}>
             <div className="img">
-              <img src={"/upload/" + blogPost.img} alt="" />
+              <img src={`../upload/${blogPost.img}`} alt="" />
             </div>
             <div className="content">
               <Link className="link" to={`/blog/${blogPost.id}`}>
@@ -99,7 +62,7 @@ const BlogPosts = () => {
 
       </div>
     </div>
-  )
-}
-
-export default BlogPosts;
+    )
+  }
+  
+export default BlogCatSearch;

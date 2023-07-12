@@ -17,7 +17,6 @@ const UpdateProfile = ({ setOpenUpdate, user }) => {
 
   // Cover and Profile Pic
   const upload = async (file) => {
-    console.log(file)
     try {
       const formData = new FormData();
       formData.append("file", file);

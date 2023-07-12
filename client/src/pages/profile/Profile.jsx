@@ -32,6 +32,8 @@ const Profile = () => {
     })
   );
 
+  console.log(data)
+
   const { isLoading: rIsLoading, data: relationshipData } = useQuery(["relationship"], () => 
   makeRequest.get("/relationships?followedUserId=" + userId).then((res) => {
     return res.data;
@@ -63,18 +65,18 @@ const handleFollow = () => {
       { isLoading ? ("... loading") : (
       <>
         <div className="images">
-        <img
+        {/* <img
           src="https://images.pexels.com/photos/13440765/pexels-photo-13440765.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
           alt=""
           className="cover"
-        />
-        <img
-          src="https://images.pexels.com/photos/14028501/pexels-photo-14028501.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load"
+        /> */}
+        {/* <img
+          src={"/upload/1689115981022ContactUsPageGraphic1.png"}
           alt=""
           className="profilePic"
-        />
-        {/* <img src={"/upload/"+data.coverPic} alt="" className="cover" />
-        <img src={"/upload/"+data.profilePic} alt="" className="profilePic" /> */}
+        /> */}
+        <img src={"/upload/" + data.coverPic} alt="" className="cover" />
+        <img src={"/upload/" + data.profilePic} alt="" className="profilePic" />
       </div>
       <div className="profileContainer">
         <div className="uInfo">
